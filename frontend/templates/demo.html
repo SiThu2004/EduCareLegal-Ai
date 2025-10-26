@@ -1,0 +1,1454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* A little extra CSS for the active tab underline */
+        .tab-active {
+            border-bottom: 2px solid #1877F2; /* Facebook Blue */
+            color: #1877F2;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans">
+
+    <div class="container mx-auto p-4">
+        <header class="bg-white rounded-lg shadow-md">
+            <div class="relative">
+                <img class="w-full h-48 md:h-64 object-cover rounded-t-lg" src="https://images.unsplash.com/photo-1501594907352-04cda38ebc29?q=80&w=1740&auto=format&fit=crop" alt="Cover Photo">
+                <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2">
+                    <img class="w-32 h-32 md:w-40 md:h-40 rounded-full border-4 border-white shadow-lg" src="https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=1587&auto=format&fit=crop" alt="Profile Picture">
+                </div>
+            </div>
+
+            <div class="pt-20 md:pt-24 pb-4 px-6 text-center">
+                <h1 class="text-3xl font-bold text-gray-800">Jessica Miller</h1>
+                <p class="text-sm text-gray-500 mt-1">@jessica_miller</p>
+                <p class="mt-4 text-gray-600 max-w-md mx-auto">Digital artist & coffee enthusiast. Exploring the world one pixel at a time. 🎨☕️</p>
+                
+                <div class="mt-6 flex justify-center items-center space-x-4">
+                    <button class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg transition duration-200">
+                        Add Friend
+                    </button>
+                    <button class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-6 rounded-lg transition duration-200">
+                        Message
+                    </button>
+                </div>
+            </div>
+            
+            <hr class="border-gray-200">
+
+            <nav class="flex justify-center">
+                <button onclick="showTab('posts')" class="tab-btn tab-active py-4 px-6 font-semibold text-gray-600 hover:text-blue-600 transition duration-200">Posts</button>
+                <button onclick="showTab('about')" class="tab-btn py-4 px-6 font-semibold text-gray-600 hover:text-blue-600 transition duration-200">About</button>
+                <button onclick="showTab('photos')" class="tab-btn py-4 px-6 font-semibold text-gray-600 hover:text-blue-600 transition duration-200">Photos</button>
+            </nav>
+        </header>
+
+        <main class="mt-6">
+            <div id="posts" class="tab-content">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="lg:col-span-1 space-y-6">
+                        <div class="bg-white p-6 rounded-lg shadow-md">
+                            <h2 class="text-xl font-bold text-gray-800 mb-4">Intro</h2>
+                            <ul class="space-y-3 text-gray-600">
+                                <li class="flex items-center"><svg class="w-5 h-5 mr-2 text-gray-400" fill="currentColor" viewBox="0 0 20 20"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path></svg>Lives in <strong>San Francisco, CA</strong></li>
+                                <li class="flex items-center"><svg class="w-5 h-5 mr-2 text-gray-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>Joined in <strong>October 2025</strong></li>
+                                <li class="flex items-center"><svg class="w-5 h-5 mr-2 text-gray-400" fill="currentColor" viewBox="0 0 20 20"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path></svg>Followed by <strong>1,234 people</strong></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="lg:col-span-2 space-y-6">
+                        <div class="bg-white p-6 rounded-lg shadow-md">
+                            <textarea class="w-full p-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" rows="3" placeholder="What's on your mind, Jessica?"></textarea>
+                            <div class="flex justify-end mt-4">
+                                <button class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg transition duration-200">Post</button>
+                            </div>
+                        </div>
+                        <div class="bg-white p-6 rounded-lg shadow-md">
+                            <div class="flex items-start">
+                                <img class="w-12 h-12 rounded-full mr-4" src="https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=1587&auto=format&fit=crop" alt="Profile Picture">
+                                <div>
+                                    <h3 class="font-bold text-gray-800">Jessica Miller</h3>
+                                    <p class="text-sm text-gray-500">2 hours ago</p>
+                                </div>
+                            </div>
+                            <p class="mt-4 text-gray-700">Just finished this new piece! What do you all think? Really happy with how the colors turned out. ✨</p>
+                            <img class="mt-4 rounded-lg w-full" src="https://images.unsplash.com/photo-1547826039-bfc35e0f1ea8?q=80&w=1672&auto=format&fit=crop" alt="Post image">
+                            <div class="mt-4 flex justify-between text-gray-500">
+                                <button class="flex items-center space-x-2 hover:text-blue-600"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.562 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.865.8L6 10.333z"></path></svg><span>Like</span></button>
+                                <button class="flex items-center space-x-2 hover:text-blue-600"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 5v8a2 2 0 01-2 2h-5l-5 4v-4H4a2 2 0 01-2-2V5a2 2 0 012-2h12a2 2 0 012 2zM7 8H5v2h2V8zm2 0h2v2H9V8zm6 0h-2v2h2V8z" clip-rule="evenodd"></path></svg><span>Comment</span></button>
+                                <button class="flex items-center space-x-2 hover:text-blue-600"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M15 8a3 3 0 10-2.977-2.63l-4.94 2.47a3 3 0 100 4.319l4.94 2.47a3 3 0 10.895-1.789l-4.94-2.47a3.027 3.027 0 000-.74l4.94-2.47C13.456 7.68 14.19 8 15 8z"></path></svg><span>Share</span></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="about" class="tab-content hidden bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-xl font-bold text-gray-800 mb-4">About Jessica</h2>
+                <p class="text-gray-700">Detailed information about Jessica would go here. This could include work history, education, contact information, and more.</p>
+            </div>
+
+            <div id="photos" class="tab-content hidden bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-xl font-bold text-gray-800 mb-4">Photos</h2>
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    <img src="https://images.unsplash.com/photo-1547826039-bfc35e0f1ea8?q=80&w=1672&auto=format&fit=crop" class="rounded-lg object-cover w-full h-40" alt="Photo 1">
+                    <img src="https://images.unsplash.com/photo-1501594907352-04cda38ebc29?q=80&w=1740&auto=format&fit=crop" class="rounded-lg object-cover w-full h-40" alt="Photo 2">
+                    <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=1740&auto=format&fit=crop" class="rounded-lg object-cover w-full h-40" alt="Photo 3">
+                    <img src="https://images.unsplash.com/photo-1480074568708-e7b720bb3f09?q=80&w=1740&auto=format&fit=crop" class="rounded-lg object-cover w-full h-40" alt="Photo 4">
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function showTab(tabId) {
+            // Hide all tab content
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabContents.forEach(content => {
+                content.classList.add('hidden');
+            });
+
+            // Remove active class from all tab buttons
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            tabButtons.forEach(button => {
+                button.classList.remove('tab-active');
+            });
+
+            // Show the selected tab content
+            document.getElementById(tabId).classList.remove('hidden');
+
+            // Add active class to the clicked button
+            event.currentTarget.classList.add('tab-active');
+        }
+    </script>
+
+</body>
+</html>
+
+<!-- 
+<header
+         class="sticky top-0 z-40 flex items-center justify-between mb-4 border-b border-gray-300 pb-4 bg-white px-4">
+         <div class="flex items-center space-x-3">
+            <img src="/image/english.jpg" alt="Avatar" class="w-8 h-8 rounded-full border border-gray-300">
+            <h1 class="text-xl font-semibold">English Teacher</h1>
+         </div>
+         <div class="flex items-center space-x-3">
+            <a href="/englishcall">
+               <button
+                  class="p-2 rounded-full border border-gray-400 hover:bg-gray-100 hover:border-green-500 transition">
+                  <svg class="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.17 12.17 0 00.7 2.81 2 2 0 01-.45 2.11L8 10a16 16 0 006 6l1.36-1.36a2 2 0 012.11-.45 12.17 12.17 0 002.81.7A2 2 0 0122 16.92z" />
+                  </svg>
+               </button>
+            </a>
+
+            <!-- Character setting button -->
+            <button id="openRightSidebar"
+               class="p-2 rounded-full border border-gray-400 hover:bg-gray-100 hover:border-red-500 transition">
+               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                  <circle cx="5" cy="12" r="2" />
+                  <circle cx="12" cy="12" r="2" />
+                  <circle cx="19" cy="12" r="2" />
+               </svg>
+            </button>
+         </div>
+      </header>
+
+       <header class="sticky top-0 z-40 flex items-center justify-between mb-4 border-b border-gray-300 pb-4 bg-white px-4">
+         <div class="flex items-center space-x-3">
+            <img src="/image/english.jpg" alt="Avatar" class="w-8 h-8 rounded-full border border-gray-300">
+            <h1 class="text-xl font-semibold">English Teacher</h1>
+         </div>
+         <div class="flex items-center space-x-3">
+            <!-- Add History Button -->
+            <a href="/chat-history">
+               <button class="p-2 rounded-full border border-gray-400 hover:bg-gray-100 hover:border-purple-500 transition">
+                  <svg class="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+               </button>
+            </a>
+
+            <a href="/englishcall">
+               <button class="p-2 rounded-full border border-gray-400 hover:bg-gray-100 hover:border-green-500 transition">
+                  <svg class="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.17 12.17 0 00.7 2.81 2 2 0 01-.45 2.11L8 10a16 16 0 006 6l1.36-1.36a2 2 0 012.11-.45 12.17 12.17 0 002.81.7A2 2 0 0122 16.92z" />
+                  </svg>
+               </button>
+            </a>
+
+            <!-- Character setting button -->
+            <button id="openRightSidebar" class="p-2 rounded-full border border-gray-400 hover:bg-gray-100 hover:border-red-500 transition">
+               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                  <circle cx="5" cy="12" r="2" />
+                  <circle cx="12" cy="12" r="2" />
+                  <circle cx="19" cy="12" r="2" />
+               </svg>
+            </button>
+         </div>
+      </header> -->
+
+
+
+
+
+
+      {% extends "index.html" %}
+
+{% block title %}English Teacher Chat{% endblock %}
+
+{% block content %}
+   <!-- Left Sidebar -->
+   <!-- <aside class="fixed top-0 left-0 w-64 h-screen bg-gray-800 text-white p-4 z-50">
+      <ul class="space-y-2 font-medium">
+         <li>
+            <a href="/"
+               class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+               <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 22 21">
+                  <path
+                     d="M16.975 11H10V4.025a1 1 0 0 0-1.066-.998 8.5 8.5 0 1 0 9.039 9.039.999.999 0 0 0-1-1.066h.002Z" />
+                  <path
+                     d="M12.5 0c-.157 0-.311.01-.565.027A1 1 0 0 0 11 1.02V10h8.975a1 1 0 0 0 1-.935c.013-.188.028-.374.028-.565A8.51 8.51 0 0 0 12.5 0Z" />
+               </svg>
+               <span class="ms-3">Dashboard</span>
+            </a>
+         </li>
+
+         <li>
+            <button type="button" class="flex items-center w-full p-2 rounded hover:bg-gray-700"
+               data-collapse-toggle="dropdown-example">
+               <svg class="w-6 h-6 text-gray-300" viewBox="0 0 64 64" fill="none" stroke="currentColor"
+                  stroke-width="2">
+                  <circle cx="32" cy="18" r="10" />
+                  <path d="M22 44c0-6 20-6 20 0v6H22v-6z" />
+                  <circle cx="14" cy="26" r="7" />
+                  <path d="M8 44c0-4 12-4 12 0v4H8v-4z" />
+                  <circle cx="50" cy="26" r="7" />
+                  <path d="M44 44c0-4 12-4 12 0v4H44v-4z" />
+               </svg>
+               <span class="flex-1 text-left">Characters</span>
+               <svg class="w-3 h-3 ml-2" fill="none" stroke="currentColor" viewBox="0 0 10 6">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1l4 4 4-4" />
+               </svg>
+            </button>
+            <ul id="dropdown-example" class="hidden py-2 space-y-2">
+               <li class="flex items-center space-x-2 p-2">
+                  <img src="/image/english.jpg" alt="English" class="w-10 h-10 rounded-full">
+                  <a href="/english"
+                     class="flex items-center w-full p-2 text-gray-900 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
+                     English Teacher
+                  </a>
+               </li>
+               <li class="flex items-center space-x-2 p-2">
+                  <img src="/image/doctor.jpg" alt="Doctor" class="w-10 h-10 rounded-full">
+                  <a href="/doctor"
+                     class="flex items-center w-full p-2 text-gray-900 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
+                     Doctor
+                  </a>
+               </li>
+               <li class="flex items-center space-x-2 p-2">
+                  <img src="/image/lawer.jpg" alt="Lawyer" class="w-10 h-10 rounded-full">
+                  <a href="/lawyer"
+                     class="flex items-center w-full p-2 text-gray-900 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
+                     Lawyer
+                  </a>
+               </li>
+            </ul>
+         </li>
+
+         <li>
+            <a href="/translate"
+               class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+               <svg class="w-5 h-5 text-gray-500" fill="currentColor" viewBox="0 0 24 24">
+                  <path
+                     d="M3 4a1 1 0 011-1h7a1 1 0 011 1v3h-2V5H5v14h5v-2h2v3a1 1 0 01-1 1H4a1 1 0 01-1-1V4zm10 0h8a1 1 0 011 1v2h-9V5a1 1 0 010-1zm0 4h9v11a1 1 0 01-1 1h-8a1 1 0 01-1-1V8z" />
+               </svg>
+               <span class="ms-3">Translate</span>
+            </a>
+         </li>
+
+         <li>
+            <a href="#"
+               class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+               <svg
+                  class="shrink-0 w-5 h-5 text-gray-500 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                  xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                  <path
+                     d="M12 12c2.761 0 5-2.239 5-5s-2.239-5-5-5-5 2.239-5 5 2.239 5 5 5zm0 2c-3.866 0-7 2.239-7 5v1c0 .552.447 1 1 1h12c.553 0 1-.448 1-1v-1c0-2.761-3.134-5-7-5z" />
+               </svg>
+               <span class="flex-1 ms-3 whitespace-nowrap">Profile</span>
+            </a>
+         </li>
+
+         <li>
+            <a href="#"
+               class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+               <svg
+                  class="shrink-0 w-5 h-5 text-gray-500 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                  xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                  <path
+                     d="M19.14,12.94c.04-.31,.06-.63,.06-.94s-.02-.63-.06-.94l2.03-1.58c.18-.14,.23-.41,.11-.61l-1.92-3.32c-.12-.21-.37-.28-.59-.22l-2.39,.96c-.5-.38-1.05-.7-1.66-.94l-.36-2.54c-.04-.24-.24-.42-.49-.42h-3.84c-.25,0-.45,.18-.49,.42l-.36,2.54c-.61,.24-1.17,.56-1.66,.94l-2.39-.96c-.22-.07-.47,0-.59,.22l-1.92,3.32c-.12,.21-.07,.47,.11,.61l2.03,1.58c-.04,.31-.06,.63-.06,.94s.02,.63.06,.94l-2.03,1.58c-.18,.14-.23,.41-.11,.61l1.92,3.32c.12,.21.37,.28.59,.22l2.39-.96c.5,.38,1.05,.7,1.66,.94l.36,2.54c.04,.24.24,.42.49,.42h3.84c.25,0,.45-.18,.49-.42l.36-2.54c.61-.24,1.17-.56,1.66-.94l2.39,.96c.22,.07.47,0,.59-.22l1.92-3.32c.12-.21.07-.47-.11-.61l-2.03-1.58ZM12,15.6c-1.99,0-3.6-1.61-3.6-3.6s1.61-3.6,3.6-3.6,3.6,1.61,3.6,3.6-1.61,3.6-3.6,3.6Z" />
+               </svg>
+               <span class="flex-1 ms-3 whitespace-nowrap">Settings</span>
+            </a>
+         </li>
+
+         <li>
+            <a href="#"
+               class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+               <svg
+                  class="shrink-0 w-5 h-5 text-gray-500 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                  xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 16">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                     d="M1 8h11m0 0L8 4m4 4-4 4m4-11h3a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-3" />
+               </svg>
+               <span class="flex-1 ms-3 whitespace-nowrap">Logout</span>
+            </a>
+         </li>
+      </ul>
+   </aside> -->
+
+   <!-- Right Sidebar for settings -->
+   <div class="right-sidebar" id="rightSidebar">
+      <div class="p-6">
+         
+         <div class="flex justify-between items-center mb-6">
+            <h2 class="text-xl font-bold">Character Settings</h2>
+            <button id="closeRightSidebar" class="text-gray-500 hover:text-gray-700">
+               <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                  stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+               </svg>
+            </button>
+         </div>
+
+         <div class="space-y-6">
+            <!-- Character Info -->
+            <div class="flex items-center space-x-4">
+               <img src="/image/english.jpg" alt="English Teacher" class="w-16 h-16 rounded-full">
+               <div>
+                  <h3 class="font-semibold">English Teacher</h3>
+                  <p class="text-sm text-gray-500">Native English Speaker</p>
+               </div>
+            </div>
+
+            <!-- Settings Sections -->
+            <div class="space-y-4">
+               <div>
+                  <h4 class="font-medium mb-2">Voice</h4>
+                  <select id="voiceSelect" class="w-full p-2 border border-gray-300 rounded">
+                     <option value="default">Default (Jenny)</option>
+                     <option value="female2">Female Voice 1 (Aria)</option>
+                     <option value="female3">Female Voice 2 (Ana)</option>
+                     <option value="female4">Female Voice 3 (Ashley)</option>
+                     <option value="female5">Female Voice 4 (Michelle)</option>
+                     <option value="female6">Female Voice 5 (Sara)</option>
+                  </select>
+               </div>
+            </div>
+
+            <div>
+               <h4 class="font-medium mb-2">Speaking Speed</h4>
+               <select id="speedSelect" class="w-full p-2 border border-gray-300 rounded">
+                  <option value="slow">Slow</option>
+                  <option value="normal" selected>Normal</option>
+                  <option value="fast">Fast</option>
+               </select>
+            </div>
+
+            <div>
+               <h4 class="font-medium mb-2">Interaction History</h4>
+               <div class="bg-gray-100 p-3 rounded">
+                  <p class="text-sm">No history yet</p>
+               </div>
+            </div>
+
+            <div>
+               <h4 class="font-medium mb-2">Pinned Messages</h4>
+               <div class="bg-gray-100 p-3 rounded">
+                  <p class="text-sm">No pinned messages</p>
+               </div>
+            </div>
+         </div>
+
+         <button id="saveSettingsBtn" class="w-full py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition">
+            Save Settings
+         </button>
+      </div>
+   </div>
+   </div>
+
+   <!-- Overlay -->
+   <div class="overlay" id="overlay"></div>
+
+   <!-- Main Content -->
+   <main class="ml-64 min-h-screen bg-white p-6">
+      <!-- Header -->
+      
+
+       <header class="sticky top-0 z-40 flex items-center justify-between mb-4 border-b border-gray-300 pb-4 bg-white px-4">
+         <div class="flex items-center space-x-3">
+            <img src="/image/english.jpg" alt="Avatar" class="w-8 h-8 rounded-full border border-gray-300">
+            <h1 class="text-xl font-semibold">English Teacher</h1>
+         </div>
+         <div class="flex items-center space-x-3">
+            <!-- Add History Button -->
+            <a href="/chat-history">
+               <button class="p-2 rounded-full border border-gray-400 hover:bg-gray-100 hover:border-purple-500 transition">
+                  <svg class="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+               </button>
+            </a>
+
+            <a href="/englishcall">
+               <button class="p-2 rounded-full border border-gray-400 hover:bg-gray-100 hover:border-green-500 transition">
+                  <svg class="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.17 12.17 0 00.7 2.81 2 2 0 01-.45 2.11L8 10a16 16 0 006 6l1.36-1.36a2 2 0 012.11-.45 12.17 12.17 0 002.81.7A2 2 0 0122 16.92z" />
+                  </svg>
+               </button>
+            </a>
+
+            <!-- Character setting button -->
+            <button id="openRightSidebar" class="p-2 rounded-full border border-gray-400 hover:bg-gray-100 hover:border-red-500 transition">
+               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                  <circle cx="5" cy="12" r="2" />
+                  <circle cx="12" cy="12" r="2" />
+                  <circle cx="19" cy="12" r="2" />
+               </svg>
+            </button>
+         </div>
+      </header>
+
+      <!-- Main Chat Section -->
+      <div class="flex flex-col items-center">
+         <img src="/image/english.jpg" alt="Profile" class="w-20 h-20 rounded-full shadow mb-4">
+         <h2 class="text-2xl font-semibold mb-1">English Teacher</h2>
+
+         <div id="chatBox" class="w-full max-w-lg space-y-4 mt-6 overflow-y-auto">
+            <!-- Default teacher message -->
+            <div class="bg-gray-100 rounded-2xl p-4 shadow flex items-start space-x-3">
+               <img src="/image/english.jpg" alt="Avatar" class="w-10 h-10 rounded-full">
+               <div>
+                  <p class="font-semibold text-sm mb-1">English Teacher</p>
+                  <p class="text-sm text-gray-800">I am Tom, I am a native American. You can speak with me about
+                     everything. I will talk with you and at the same time correct your grammatical errors.</p>
+               </div>
+            </div>
+         </div>
+
+         <!-- Message Input -->
+         <div class="w-full max-w-lg flex items-center rounded-full border border-gray-300 shadow p-2 mt-6">
+            <input id="userInput" type="text" placeholder="Message English Teacher…"
+               class="flex-grow px-4 py-2 rounded-full focus:outline-none text-sm bg-white text-gray-800" />
+            <button onclick="sendMessage()" class="p-2 hover:bg-gray-200 rounded-full">
+               <svg class="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M22 2L11 13" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                     d="M22 2L15 22L11 13L2 9L22 2Z" />
+               </svg>
+            </button>
+         </div>
+      </div>
+   </main>
+
+   <!-- Scripts -->
+   <script>
+      // Toggle right sidebar
+      document.getElementById('openRightSidebar').addEventListener('click', function () {
+         document.getElementById('rightSidebar').classList.add('open');
+         document.getElementById('overlay').classList.add('active');
+
+         // Load saved settings when sidebar opens
+         const savedSettings = JSON.parse(localStorage.getItem('voiceSettings')) || {
+            voice: 'default',
+            speed: 'normal'
+         };
+         document.getElementById('voiceSelect').value = savedSettings.voice;
+         document.getElementById('speedSelect').value = savedSettings.speed;
+      });
+
+      document.getElementById('closeRightSidebar').addEventListener('click', function () {
+         document.getElementById('rightSidebar').classList.remove('open');
+         document.getElementById('overlay').classList.remove('active');
+      });
+
+      document.getElementById('overlay').addEventListener('click', function () {
+         document.getElementById('rightSidebar').classList.remove('open');
+         this.classList.remove('active');
+      });
+
+      // Save settings button
+      document.getElementById('saveSettingsBtn').addEventListener('click', function () {
+         const voiceType = document.getElementById('voiceSelect').value;
+         const speed = document.getElementById('speedSelect').value;
+
+         // Save to localStorage
+         localStorage.setItem('voiceSettings', JSON.stringify({
+            voice: voiceType,
+            speed: speed
+         }));
+
+         alert('Settings saved successfully!');
+         document.getElementById('rightSidebar').classList.remove('open');
+         document.getElementById('overlay').classList.remove('active');
+      });
+
+      async function sendMessage() {
+         const input = document.getElementById('userInput');
+         const message = input.value.trim();
+         if (!message) return;
+
+         // Clear input immediately
+         input.value = '';
+
+         const voiceType = document.getElementById('voiceSelect').value;
+         const speed = document.getElementById('speedSelect').value;
+
+         addUserMessageToChat(message);
+
+         //Add typing indicator
+         const typingId = 'typing-' + Date.now();
+         addTeacherTypingIndicator(typingId);
+
+         try {
+             const response = await fetch('/chat', {
+           method: 'POST',
+               headers: { 'Content-Type': 'application/json' },
+               body: JSON.stringify({
+                  message,
+                   voice: voiceType,
+                  speed: speed
+               })
+            });
+
+            // Remove typing indicator
+            removeTypingIndicator(typingId);
+
+            if (response.ok) {
+               const data = await response.json();
+               addTeacherMessageToChat(data.text);
+            } else {
+               addTeacherMessageToChat("Something went wrong.");
+            }
+         } catch (error) {
+            removeTypingIndicator(typingId);
+            addTeacherMessageToChat("Connection error.");
+         }
+       }
+
+      function addUserMessageToChat(message) {
+         const chatBox = document.getElementById('chatBox');
+         const userMsg = `
+    <div class="flex justify-end mb-2">
+        <div class="flex flex-col items-end space-y-1 max-w-xs">
+            <div class="bg-blue-100 text-gray-800 rounded-2xl p-3 shadow">
+                <p class="text-sm">${message}</p>
+            </div>
+        </div>
+    </div>
+    `;
+         chatBox.insertAdjacentHTML('beforeend', userMsg);
+         chatBox.scrollTop = chatBox.scrollHeight;
+      }
+
+      function addTeacherTypingIndicator(id) {
+         const chatBox = document.getElementById('chatBox');
+         const typingMsg = `
+    <div id="${id}" class="flex items-start space-x-3">
+        <img src="/image/english.jpg" alt="Avatar" class="w-8 h-8 rounded-full" />
+        <div class="bg-gray-100 rounded-2xl p-3 shadow max-w-xs">
+            <p class="font-semibold text-sm mb-1">English Teacher</p>
+             <p class="text-sm text-gray-500 italic">Typing...</p>
+        </div>
+    </div>
+    `;
+         chatBox.insertAdjacentHTML('beforeend', typingMsg);
+         chatBox.scrollTop = chatBox.scrollHeight;
+      }
+
+      function removeTypingIndicator(id) {
+         const typingElement = document.getElementById(id);
+         if (typingElement) {
+            typingElement.remove();
+         }
+      }
+
+      function addTeacherMessageToChat(message) {
+         const chatBox = document.getElementById('chatBox');
+         const teacherMsg = `
+    <div class="flex items-start space-x-3">
+        <img src="/image/english.jpg" alt="Avatar" class="w-8 h-8 rounded-full" />
+        <div class="bg-gray-100 rounded-2xl p-3 shadow max-w-xs">
+            <p class="font-semibold text-sm mb-1">English Teacher</p>
+            <p class="text-sm text-gray-800">${message}</p>
+        </div>
+    </div>
+    `;
+         chatBox.insertAdjacentHTML('beforeend', teacherMsg);
+         chatBox.scrollTop = chatBox.scrollHeight;
+      }
+
+      // Allow sending message with Enter key
+      document.getElementById('userInput').addEventListener('keypress', function (e) {
+         if (e.key === 'Enter') {
+            sendMessage();
+         }
+      });
+      // Add this to your existing JavaScript code
+
+
+      // Clean up audio files when page loads or refreshes
+      window.addEventListener('load', async function () {
+         try {
+            const response = await fetch('/english/clean-audio', {
+               method: 'POST',
+               headers: { 'Content-Type': 'application/json' }
+            });
+
+            if (!response.ok) {
+               console.error('Failed to clean audio files');
+            }
+         } catch (error) {
+            console.error('Error cleaning audio files:', error);
+         }
+      });
+
+      // Also clean up when page is about to unload
+      window.addEventListener('beforeunload', async function () {
+         try {
+            // Use synchronous request to ensure it completes before page unloads
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', '/english/clean-audio', false);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.send();
+         } catch (error) {
+            console.error('Error cleaning audio files:', error);
+         }
+      });
+   </script>
+
+{% endblock %}
+   
+   
+doctor
+
+
+{% extends "index.html" %}
+
+{% block title %}Doctor Chat{% endblock %}
+
+{% block content %}
+<!-- <div class="right-sidebar" id="rightSidebar" >
+    <div class="p-6">
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-xl font-bold">Character Settings</h2>
+            <button id="closeRightSidebar" class="text-gray-500 hover:text-gray-700">&times;</button>
+        </div>
+
+        <div>
+            <label for="voiceSelect">Voice</label>
+            <select id="voiceSelect" class="w-full p-2 border border-gray-300 rounded">
+                <option value="default">Default (Jenny)</option>
+                <option value="female2">Female Voice 1 (Aria)</option>
+                <option value="female3">Female Voice 2 (Ana)</option>
+                <option value="female4">Female Voice 3 (Ashley)</option>
+                <option value="female5">Female Voice 4 (Michelle)</option>
+                <option value="female6">Female Voice 5 (Sara)</option>
+            </select>
+        </div>
+
+        <div class="mt-4">
+            <label for="speedSelect">Speaking Speed</label>
+            <select id="speedSelect" class="w-full p-2 border border-gray-300 rounded">
+                <option value="slow">Slow</option>
+                <option value="normal" selected>Normal</option>
+                <option value="fast">Fast</option>
+            </select>
+        </div>
+
+        <button id="saveSettingsBtn" class="w-full py-2 mt-4 bg-blue-500 text-white rounded hover:bg-blue-600 transition">Save Settings</button>
+    </div>
+</div>
+
+<div class="overlay" id="overlay" style="display:none;"></div>
+
+<main class="ml-64 min-h-screen bg-white p-6">
+    <header class="flex items-center justify-between mb-4 border-b border-gray-300 pb-4 bg-white px-4">
+        <div class="flex items-center space-x-3">
+            <img src="/image/doctor.jpg" alt="Avatar" class="w-8 h-8 rounded-full border border-gray-300">
+            <h1 class="text-xl font-semibold">Doctor</h1>
+        </div>
+        <div>
+            <button id="openRightSidebar" class="p-2 rounded-full border border-gray-400 hover:bg-gray-100">Settings</button>
+        </div>
+    </header>
+
+    <div class="flex flex-col items-center">
+        <img src="/image/doctor.jpg" alt="Profile" class="w-20 h-20 rounded-full shadow mb-4">
+        <h2 class="text-2xl font-semibold mb-1">Doctor</h2>
+
+        <div id="chatBox" class="w-full max-w-lg space-y-4 mt-6 overflow-y-auto" style="max-height:400px; overflow-y:auto;">
+            <div class="bg-gray-100 rounded-2xl p-4 shadow flex items-start space-x-3">
+                <img src="/image/doctor.jpg" alt="Avatar" class="w-10 h-10 rounded-full">
+                <div>
+                    <p class="font-semibold text-sm mb-1">Doctor</p>
+                    <p class="text-sm text-gray-800">I am Dr. Smith, a medical professional. You can consult with me about health concerns, medical questions, or general wellness.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="w-full max-w-lg flex items-center rounded-full border border-gray-300 shadow p-2 mt-6">
+            <input id="userInput" type="text" placeholder="Message Doctor…" class="flex-grow px-4 py-2 rounded-full focus:outline-none text-sm bg-white text-gray-800" />
+            <button onclick="sendMessage()" class="p-2 hover:bg-gray-200 rounded-full">
+               <svg class="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M22 2L11 13" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                     d="M22 2L15 22L11 13L2 9L22 2Z" />
+               </svg>
+            </button>
+        </div>
+    </div>
+</main> -->
+
+<div class="right-sidebar" id="rightSidebar">
+   <div class="p-6">
+
+      <div class="flex justify-between items-center mb-6">
+         <h2 class="text-xl font-bold">Character Settings</h2>
+         <button id="closeRightSidebar" class="text-gray-500 hover:text-gray-700">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+               stroke="currentColor">
+               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+         </button>
+      </div>
+
+      <div class="space-y-6">
+         <!-- Character Info -->
+         <div class="flex items-center space-x-4">
+            <img src="/image/doctor.jpg" alt="English Teacher" class="w-16 h-16 rounded-full">
+            <div>
+               <h3 class="font-semibold">Doctor Health</h3>
+               <p class="text-sm text-gray-500">Doctor</p>
+            </div>
+         </div>
+
+         <!-- Settings Sections -->
+         <div class="space-y-4">
+            <div>
+               <h4 class="font-medium mb-2">Voice</h4>
+               <select id="voiceSelect" class="w-full p-2 border border-gray-300 rounded">
+                  <option value="default">Male Voice 1</option>
+                  <!-- <option value="male2">Male Voice 2 (Brandon)</option>
+                  <option value="male3">Male Voice 3 (Davis)</option>
+                  <option value="male4">Male Voice 4 (Eric)</option> -->
+                  <option value="myanmar">Myanmar Voice</option>
+               </select>
+            </div>
+         </div>
+
+         <div>
+            <h4 class="font-medium mb-2">Speaking Speed</h4>
+            <select id="speedSelect" class="w-full p-2 border border-gray-300 rounded">
+               <option value="slow">Slow</option>
+               <option value="normal" selected>Normal</option>
+               <option value="fast">Fast</option>
+            </select>
+         </div>
+
+         <div>
+            <h4 class="font-medium mb-2">Interaction History</h4>
+            <div class="bg-gray-100 p-3 rounded">
+               <p class="text-sm">No history yet</p>
+            </div>
+         </div>
+
+         <div>
+            <h4 class="font-medium mb-2">Pinned Messages</h4>
+            <div class="bg-gray-100 p-3 rounded">
+               <p class="text-sm">No pinned messages</p>
+            </div>
+         </div>
+      </div>
+
+      <button id="saveSettingsBtn" class="w-full py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition">
+         Save Settings
+      </button>
+   </div>
+</div>
+</div>
+
+<!-- Overlay -->
+<div class="overlay" id="overlay"></div>
+
+<!-- Main Content -->
+<main class="ml-64 min-h-screen bg-white p-6">
+   <!-- Header -->
+   <header class="sticky top-0 z-40 flex items-center justify-between mb-4 border-b border-gray-300 pb-4 bg-white px-4">
+      <div class="flex items-center space-x-3">
+         <img src="/image/doctor.jpg" alt="Avatar" class="w-8 h-8 rounded-full border border-gray-300">
+         <h1 class="text-xl font-semibold">Doctor Health</h1>
+      </div>
+      <div class="flex items-center space-x-3">
+         <a href="/doctorcall">
+            <button class="p-2 rounded-full border border-gray-400 hover:bg-gray-100 hover:border-green-500 transition">
+               <svg class="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                     d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.17 12.17 0 00.7 2.81 2 2 0 01-.45 2.11L8 10a16 16 0 006 6l1.36-1.36a2 2 0 012.11-.45 12.17 12.17 0 002.81.7A2 2 0 0122 16.92z" />
+               </svg>
+            </button>
+         </a>
+
+         <!-- Character setting button -->
+         <button id="openRightSidebar"
+            class="p-2 rounded-full border border-gray-400 hover:bg-gray-100 hover:border-red-500 transition">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+               <circle cx="5" cy="12" r="2" />
+               <circle cx="12" cy="12" r="2" />
+               <circle cx="19" cy="12" r="2" />
+            </svg>
+         </button>
+      </div>
+   </header>
+
+   <!-- Main Chat Section -->
+   <div class="flex flex-col items-center">
+      <img src="/image/doctor.jpg" alt="Profile" class="w-20 h-20 rounded-full shadow mb-4">
+      <h2 class="text-2xl font-semibold mb-1">Doctor Health</h2>
+
+      <div id="chatBox" class="w-full max-w-lg space-y-4 mt-6 overflow-y-auto">
+         <!-- Default teacher message -->
+         <div class="bg-gray-100 rounded-2xl p-4 shadow flex items-start space-x-3">
+            <img src="/image/doctor.jpg" alt="Avatar" class="w-10 h-10 rounded-full">
+            <div>
+               <p class="font-semibold text-sm mb-1">Doctor Health</p>
+               <p class="text-sm text-gray-800">I am Dr. Smith, a medical professional.
+                  You can consult with me about health concerns, medical questions, or general wellness.</p>
+            </div>
+         </div>
+      </div>
+
+      <!-- Message Input -->
+      <div class="w-full max-w-lg flex items-center rounded-full border border-gray-300 shadow p-2 mt-6">
+         <input id="userInput" type="text" placeholder="Message English Teacher…"
+            class="flex-grow px-4 py-2 rounded-full focus:outline-none text-sm bg-white text-gray-800" />
+         <button onclick="sendMessage()" class="p-2 hover:bg-gray-200 rounded-full">
+            <svg class="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M22 2L11 13" />
+               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M22 2L15 22L11 13L2 9L22 2Z" />
+            </svg>
+         </button>
+      </div>
+   </div>
+</main>
+
+<script>
+
+   // Toggle right sidebar
+   document.getElementById('openRightSidebar').addEventListener('click', function () {
+      document.getElementById('rightSidebar').classList.add('open');
+      document.getElementById('overlay').classList.add('active');
+
+      // Load saved settings when sidebar opens
+      const savedSettings = JSON.parse(localStorage.getItem('voiceSettings')) || {
+         voice: 'myanmar',
+         speed: 'normal'
+      };
+      document.getElementById('voiceSelect').value = savedSettings.voice;
+      document.getElementById('speedSelect').value = savedSettings.speed;
+   });
+   // Sidebar toggle
+   // const rightSidebar = document.getElementById('rightSidebar');
+   // const overlay = document.getElementById('overlay');
+   document.getElementById('closeRightSidebar').addEventListener('click', function () {
+      document.getElementById('rightSidebar').classList.remove('open');
+      document.getElementById('overlay').classList.remove('active');
+   });
+
+   document.getElementById('overlay').addEventListener('click', function () {
+      document.getElementById('rightSidebar').classList.remove('open');
+      this.classList.remove('active');
+   });
+
+   // Save settings button
+   document.getElementById('saveSettingsBtn').addEventListener('click', function () {
+      const voiceType = document.getElementById('voiceSelect').value;
+      const speed = document.getElementById('speedSelect').value;
+
+      // Save to localStorage
+      localStorage.setItem('voiceSettings', JSON.stringify({
+         voice: voiceType,
+         speed: speed
+      }));
+
+      alert('Settings saved successfully!');
+      document.getElementById('rightSidebar').classList.remove('open');
+      document.getElementById('overlay').classList.remove('active');
+   });
+
+
+   async function sendMessage() {
+    const input = document.getElementById('userInput');
+    const message = input.value.trim();
+    if (!message) return;
+    input.value = '';
+
+    const voiceType = document.getElementById('voiceSelect').value;
+    const speed = document.getElementById('speedSelect').value;
+
+    addUserMessageToChat(message);
+
+    const typingId = 'typing-' + Date.now();
+    addDoctorTypingIndicator(typingId);
+
+    try {
+        const response = await fetch('/doctor/call', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ 
+        message, 
+        voice: voiceType, 
+        speed: speed 
+    })
+});
+
+if (response.ok) {
+    const data = await response.json();
+    addDoctorMessageToChat(data.text);  // always show doctor text
+
+    if (data.audio) {
+        const audio = new Audio(data.audio);
+        audio.play();
+    }
+} else {
+    addDoctorMessageToChat("Something went wrong. Please try again.");
+}
+
+
+        removeTypingIndicator(typingId);
+
+        if (response.ok) {
+            const data = await response.json();
+            addDoctorMessageToChat(data.text);
+
+            if (data.audio) {
+                const audio = new Audio(data.audio);
+                audio.play(); // Myanmar voice with selected speed
+            }
+        } else {
+            addDoctorMessageToChat("Something went wrong. Please try again.");
+        }
+    } catch (error) {
+        removeTypingIndicator(typingId);
+      //   addDoctorMessageToChat("Unable to reach server. Please try again later.");
+    }
+}
+
+
+   function addUserMessageToChat(message) {
+      const chatBox = document.getElementById('chatBox');
+      const userMsg = `
+        <div class="flex justify-end mb-2">
+            <div class="flex flex-col items-end space-y-1 max-w-xs">
+                <div class="bg-blue-100 text-gray-800 rounded-2xl p-3 shadow">
+                    <p class="text-sm">${message}</p>
+                </div>
+            </div>
+        </div>`;
+      chatBox.insertAdjacentHTML('beforeend', userMsg);
+      chatBox.scrollTop = chatBox.scrollHeight;
+   }
+
+   function addDoctorTypingIndicator(id) {
+      const chatBox = document.getElementById('chatBox');
+      const typingMsg = `
+        <div id="${id}" class="flex items-start space-x-3">
+            <img src="/image/doctor.jpg" alt="Avatar" class="w-8 h-8 rounded-full" />
+            <div class="bg-gray-100 rounded-2xl p-3 shadow max-w-xs">
+                <p class="font-semibold text-sm mb-1">Doctor</p>
+               <p class="text-sm text-gray-500 italic">Typing...</p>
+        </div>
+            </div>
+        </div>`;
+      chatBox.insertAdjacentHTML('beforeend', typingMsg);
+      chatBox.scrollTop = chatBox.scrollHeight;
+   }
+
+   function removeTypingIndicator(id) {
+      const elem = document.getElementById(id);
+      if (elem) elem.remove();
+   }
+
+   function addDoctorMessageToChat(message) {
+      const chatBox = document.getElementById('chatBox');
+      const doctorMsg = `
+        <div class="flex items-start space-x-3">
+            <img src="/image/doctor.jpg" alt="Avatar" class="w-8 h-8 rounded-full" />
+            <div class="bg-gray-100 rounded-2xl p-3 shadow max-w-xs">
+                <p class="font-semibold text-sm mb-1">Doctor</p>
+                <p class="text-sm text-gray-800">${message}</p>
+            </div>
+        </div>`;
+      chatBox.insertAdjacentHTML('beforeend', doctorMsg);
+      chatBox.scrollTop = chatBox.scrollHeight;
+   }
+
+   // Send message on Enter key
+   document.getElementById('userInput').addEventListener('keypress', e => {
+      if (e.key === 'Enter') sendMessage();
+   });
+</script>
+
+{% endblock %}
+
+
+<!-- lawyercall -->
+
+{% extends "index.html" %}
+
+{% block title %}Lawyer Call{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-[#0D1B2A] flex items-center justify-center p-4">
+  <div class="text-center text-white space-y-6 max-w-md w-full">
+    <!-- Lawyer Avatar -->
+    <div class="flex justify-center">
+      <img src="/image/lawer.jpg" alt="U Khin Zaw" 
+           class="w-32 h-32 rounded-full border-4 border-blue-500 object-cover" 
+           id="lawyerAvatar">
+    </div>
+    
+    <!-- Status Information -->
+    <div>
+      <h1 class="text-2xl font-bold text-white">U Khin Zaw</h1>
+      <p class="text-gray-300 text-lg mt-1" id="statusText">Ready to discuss your legal concern</p>
+    </div>
+    
+    <!-- Controls -->
+    <div class="flex justify-center space-x-8 mt-6">
+      <!-- Conversation Button -->
+      <button id="toggleConversationBtn" class="flex flex-col items-center group">
+        <div class="bg-gray-800 hover:bg-gray-700 p-4 rounded-full transition-all duration-300 group-hover:scale-110">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+          </svg>
+        </div>
+        <span class="text-sm mt-2 text-white">Conversation</span>
+      </button>
+
+      <!-- Mute Button -->
+      <button id="muteBtn" class="flex flex-col items-center group">
+        <div class="bg-gray-800 hover:bg-gray-700 p-4 rounded-full transition-all duration-300 group-hover:scale-110">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="currentColor" viewBox="0 0 24 24" id="micIcon">
+            <path d="M12 1a3 3 0 00-3 3v8a3 3 0 106 0V4a3 3 0 00-3-3z" />
+            <path d="M19 11a7 7 0 01-14 0H3a9 9 0 0018 0h-2z" />
+            <path d="M12 21v-3" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white hidden" fill="none" viewBox="0 0 24 24" 
+               stroke="currentColor" stroke-width="2" id="mutedIcon">
+            <path stroke-linecap="round" stroke-linejoin="round" 
+                  d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" 
+                  clip-rule="evenodd" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2" />
+          </svg>
+        </div>
+        <span class="text-sm mt-2 text-white" id="muteText">Mute</span>
+      </button>
+
+      <!-- Hang Up Button -->
+      <button id="hangUpBtn" class="flex flex-col items-center group">
+        <div class="bg-red-600 hover:bg-red-700 p-4 rounded-full transition-all duration-300 group-hover:scale-110">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24"
+            stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </div>
+        <span class="text-sm mt-2 text-white">End Call</span>
+      </button>
+    </div>
+    
+    <!-- Help Text -->
+    <p class="text-gray-400 text-sm mt-6">Press the microphone button to start speaking</p>
+  </div>
+</div>
+
+<!-- Overlay for sidebar -->
+<div class="overlay" id="overlay"></div>
+
+<!-- Sidebar for conversation -->
+<div class="sidebar" id="sidebar">
+  <div class="p-4 h-full flex flex-col">
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-xl font-bold text-white">Conversation</h2>
+      <button id="closeSidebar" class="text-gray-400 hover:text-white">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+    <div id="conversationHistory" class="flex-1 overflow-y-auto pr-2 space-y-2"></div>
+  </div>
+</div>
+
+<style>
+  .pulse-animation {
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+  }
+  .typing-indicator::after {
+    content: '...';
+    animation: dots 1.5s steps(3, end) infinite;
+  }
+  @keyframes dots {
+    0%, 20% { content: '.'; }
+    40% { content: '..'; }
+    60%, 100% { content: '...'; }
+  }
+  .sidebar {
+    position: fixed;
+    top: 0;
+    right: -400px;
+    width: 350px;
+    height: 100vh;
+    background-color: #1e293b;
+    transition: right 0.3s ease;
+    z-index: 100;
+    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.2);
+  }
+  .sidebar.open {
+    right: 0;
+  }
+  .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 99;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+  .overlay.active {
+    opacity: 1;
+    pointer-events: all;
+  }
+  @media (max-width: 640px) {
+    .sidebar {
+      width: 85%;
+      right: -85%;
+    }
+  }
+  .message-bubble {
+    max-width: 80%;
+    padding: 0.75rem;
+    border-radius: 1rem;
+    margin-bottom: 0.5rem;
+  }
+  .user-message {
+    background-color: #3b82f6;
+    color: white;
+    margin-left: auto;
+    border-bottom-right-radius: 0.25rem;
+  }
+  .lawyer-message {
+    background-color: #374151;
+    color: white;
+    margin-right: auto;
+    border-bottom-left-radius: 0.25rem;
+  }
+</style>
+
+<script>
+// Voice recognition variables
+let recognition;
+let isMuted = false;
+let isProcessing = false;
+let audioContext;
+let currentAudio = null;
+
+// Voice settings object
+let voiceSettings = {
+    voiceType: 'default',
+    speed: 'normal'
+};
+
+// Delete all audio files
+async function deleteAudioFiles() {
+    try {
+        const response = await fetch('/lawyer/delete-audio', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' }
+        });
+        
+        if (response.ok) {
+            console.log('Audio files cleaned');
+        } else {
+            console.error('Error cleaning audio files');
+        }
+    } catch (error) {
+        console.error('Error cleaning audio files:', error);
+    }
+}
+
+// Initialize when page loads
+async function initialize() {
+    try {
+        // Load saved settings
+        const savedSettings = JSON.parse(localStorage.getItem('lawyerVoiceSettings')) || {
+            voice: 'default',
+            speed: 'normal'
+        };
+        voiceSettings.voiceType = savedSettings.voice;
+        voiceSettings.speed = savedSettings.speed;
+
+        // Delete all audio files on page load
+        await deleteAudioFiles();
+        
+        // Initialize Web Audio API
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        
+        // Check microphone permission
+        await navigator.mediaDevices.getUserMedia({ audio: true });
+        
+        // Set up conversation toggle button
+        document.getElementById('toggleConversationBtn').addEventListener('click', toggleSidebar);
+        document.getElementById('closeSidebar').addEventListener('click', toggleSidebar);
+        document.getElementById('overlay').addEventListener('click', toggleSidebar);
+        
+        // Delete audio files when page is about to unload (refresh/close)
+        window.addEventListener('beforeunload', function() {
+            fetch('/lawyer/delete-audio', { 
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' }
+            });
+        });
+        
+        // Start recognition
+        startRecognition();
+    } catch (error) {
+        console.error("Initialization error:", error);
+        updateStatus("Error initializing microphone");
+        showError("Please allow microphone access to use this feature.");
+    }
+}
+
+// Toggle sidebar visibility
+function toggleSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('overlay');
+    sidebar.classList.toggle('open');
+    overlay.classList.toggle('active');
+}
+
+// Start voice recognition
+function startRecognition() {
+    if (isMuted || isProcessing) return;
+
+    try {
+        recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+        recognition.lang = "en-US";
+        recognition.interimResults = false;
+        recognition.maxAlternatives = 1;
+        recognition.continuous = false;
+
+        recognition.onstart = () => {
+            updateStatus("Listening...");
+            document.getElementById('lawyerAvatar').classList.add('pulse-animation');
+        };
+
+        recognition.onresult = async (event) => {
+            isProcessing = true;
+            const transcript = event.results[0][0].transcript.trim();
+            console.log("User said:", transcript);
+            
+            addToConversation('user', transcript);
+            updateStatus("Processing your question...");
+
+            try {
+                await sendVoiceMessage(transcript);
+            } catch (error) {
+                console.error("Error:", error);
+                updateStatus("Error processing request");
+                addToConversation('lawyer', "Sorry, I encountered an error. Please try again.");
+            } finally {
+                isProcessing = false;
+                if (!isMuted) {
+                    setTimeout(startRecognition, 1000);
+                }
+            }
+        };
+
+        recognition.onerror = (event) => {
+            console.error("Recognition error:", event.error);
+            if (event.error === 'not-allowed') {
+                showError("Microphone access denied. Please allow microphone use.");
+            }
+            updateStatus("Error listening");
+            isProcessing = false;
+            if (!isMuted && event.error !== "aborted") {
+                setTimeout(startRecognition, 2000);
+            }
+        };
+
+        recognition.onend = () => {
+            document.getElementById('lawyerAvatar').classList.remove('pulse-animation');
+            if (!isMuted && !isProcessing) {
+                updateStatus("Ready to discuss your legal concern");
+                setTimeout(startRecognition, 500);
+            }
+        };
+
+        recognition.start();
+    } catch (error) {
+        console.error("Recognition setup error:", error);
+        updateStatus("Setup error");
+        isProcessing = false;
+    }
+}
+
+// Send voice message to server
+async function sendVoiceMessage(message) {
+    if (!message) return;
+
+    try {
+        const typingId = addToConversation('lawyer', '<span class="typing-indicator">Thinking</span>', true);
+        
+        const response = await fetch('/lawyer/call', {
+            method: 'POST',
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ 
+                message,
+                voice: voiceSettings.voiceType,
+                speed: voiceSettings.speed
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error(`Server error: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log("Lawyer response:", data.text);
+        
+        updateConversationMessage(typingId, 'lawyer', data.text);
+        updateStatus("Lawyer is speaking...");
+        
+        if (data.audio) {
+            await playAudioResponse(data.audio);
+        }
+        
+        updateStatus("Ready to discuss your legal concern");
+    } catch (error) {
+        console.error("Communication error:", error);
+        updateStatus("Connection error");
+        throw error;
+    }
+}
+
+// Play audio response
+async function playAudioResponse(audioUrl) {
+    return new Promise((resolve, reject) => {
+        if (currentAudio) {
+            currentAudio.pause();
+            currentAudio = null;
+        }
+        
+        currentAudio = new Audio(audioUrl);
+        currentAudio.onended = () => resolve();
+        currentAudio.onerror = (error) => {
+            console.error("Audio error:", error);
+            reject(error);
+        };
+        
+        currentAudio.play().catch(error => {
+            console.error("Playback failed:", error);
+            reject(error);
+        });
+    });
+}
+
+// Add message to conversation history
+function addToConversation(sender, message, isTemporary = false) {
+    const conversation = document.getElementById('conversationHistory');
+    const messageId = 'msg-' + Date.now();
+    
+    const messageDiv = document.createElement('div');
+    messageDiv.id = messageId;
+    messageDiv.className = `message-bubble ${sender === 'user' ? 'user-message' : 'lawyer-message'}`;
+    messageDiv.innerHTML = `
+        <div class="font-semibold">${sender === 'user' ? 'You' : 'U Khin Zaw'}</div>
+        <div class="mt-1">${message}</div>
+    `;
+    
+    conversation.appendChild(messageDiv);
+    conversation.scrollTop = conversation.scrollHeight;
+    
+    return isTemporary ? messageId : null;
+}
+
+// Update existing conversation message
+function updateConversationMessage(id, sender, newMessage) {
+    const messageDiv = document.getElementById(id);
+    if (messageDiv) {
+        messageDiv.innerHTML = `
+            <div class="font-semibold">${sender === 'user' ? 'You' : 'U Khin Zaw'}</div>
+            <div class="mt-1">${newMessage}</div>
+        `;
+    }
+}
+
+// Update status text
+function updateStatus(text) {
+    document.getElementById('statusText').textContent = text;
+}
+
+// Show error message
+function showError(message) {
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'bg-red-900 text-white p-3 rounded mb-3';
+    errorDiv.textContent = message;
+    document.getElementById('conversationHistory').prepend(errorDiv);
+}
+
+// Mute button click handler
+document.getElementById("muteBtn").addEventListener("click", () => {
+    isMuted = !isMuted;
+    if (isMuted) {
+        if (recognition) recognition.stop();
+        document.getElementById("micIcon").classList.add('hidden');
+        document.getElementById("mutedIcon").classList.remove('hidden');
+        document.getElementById("muteText").textContent = "Unmute";
+        updateStatus("Microphone muted");
+    } else {
+        document.getElementById("micIcon").classList.remove('hidden');
+        document.getElementById("mutedIcon").classList.add('hidden');
+        document.getElementById("muteText").textContent = "Mute";
+        updateStatus("Starting...");
+        startRecognition();
+    }
+});
+
+// Hang up button click handler
+document.getElementById("hangUpBtn").addEventListener("click", () => {
+    if (recognition) recognition.abort();
+    if (currentAudio) currentAudio.pause();
+    window.location.href = "/lawyer";
+});
+
+// Initialize the application
+window.onload = initialize;
+</script>
+{% endblock %}

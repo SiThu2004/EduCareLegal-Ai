@@ -1,0 +1,330 @@
+{% extends "index.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+
+<div class="ml-64 min-h-screen bg-gray-50 transition-all duration-300 md:ml-64 sm:ml-0">
+    <!-- Header -->
+    <!-- <header class="bg-white shadow-sm border-b sticky top-0 z-50">
+        <div class="flex flex-wrap items-center justify-between p-4 gap-3">
+            <div class="flex items-center rounded-full px-4 py-2 w-full sm:w-96">
+                 Search removed for cleaner layout 
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="w-10 h-10 rounded-full border-2 border-blue-500 overflow-hidden">
+                    <img src="https://ui-avatars.com/api/?name={{ session.email.split('@')[0] if session.email else 'User' }}&background=007bff&color=fff"
+                        alt="User" class="w-full h-full object-cover" />
+                </div>
+            </div>
+        </div>
+    </header> -->
+
+    <!-- Dashboard Content -->
+    <main class="p-4 sm:p-6 max-w-7xl mx-auto">
+        <!-- Welcome Section -->
+        <section class="bg-blue-700 text-white rounded-2xl p-6 sm:p-8 mb-8 shadow-lg text-center sm:text-left">
+            <h1 class="text-2xl sm:text-3xl font-bold mb-2">
+                Welcome back, {{ session.email.split('@')[0] if session.email else 'User' }}! 👋
+            </h1>
+            <p class="text-blue-200 mb-6 text-base sm:text-lg">
+                Ready to continue your conversations with AI characters?
+            </p>
+            <div class="flex justify-center sm:justify-start flex-wrap gap-3">
+                <a href="http://localhost:5000/english">
+                    <button onclick="startNewChat()"
+                        class="bg-white text-blue-700 px-5 py-2 sm:px-6 sm:py-3 rounded-full font-semibold flex items-center gap-2 hover:bg-gray-100 transition-colors shadow-md">
+                        <i class="fas fa-plus"></i> Start New Chat
+                    </button>
+                </a>
+            </div>
+        </section>
+
+        <!-- Main Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Left Column -->
+            <div class="lg:col-span-2 space-y-6">
+                <!-- Recent Chats -->
+                <section class="bg-white rounded-xl shadow-sm border p-4 sm:p-6">
+                    <div class="flex flex-wrap justify-between items-center mb-6 gap-2">
+                        <h2 class="text-lg sm:text-xl font-bold text-gray-800">Recent Chats</h2>
+                        <a href="/chat-history" class="text-blue-600 font-semibold text-sm hover:text-blue-700">See
+                            All</a>
+                    </div>
+                    <div class="space-y-4" id="recent-chats-container">
+                        <div class="text-center py-8">
+                            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4">
+                            </div>
+                            <p class="text-gray-500">Loading recent chats...</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Translation & Dictionary -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <a href="/translate"><div
+                        class="bg-white rounded-xl shadow-sm border p-6 text-center cursor-pointer hover:shadow-md transition-shadow">
+                        <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-language text-blue-600 text-2xl"></i>
+                        </div>
+                        <h3 class="text-lg sm:text-xl font-bold text-gray-800 mb-2">Translation</h3>
+                        <p class="text-gray-600 text-sm sm:text-base">
+                            Translate text between different languages
+                        </p>
+                    </div></a> 
+
+                    <a href="/vocabulary"><div
+                        class="bg-white rounded-xl shadow-sm border p-6 text-center cursor-pointer hover:shadow-md transition-shadow">
+                        <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-book text-green-600 text-2xl"></i>
+                        </div>
+                        <h3 class="text-lg sm:text-xl font-bold text-gray-800 mb-2">Dictionary</h3>
+                        <p class="text-gray-600 text-sm sm:text-base">
+                            Look up word definitions and meanings
+                        </p>
+                    </div></a>
+                </div>
+            </div>
+
+            <!-- Right Column -->
+            <div class="space-y-6">
+                <!-- Featured Characters -->
+                <section class="bg-white rounded-xl shadow-sm border p-4 sm:p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-lg sm:text-xl font-bold text-gray-800"> Ai Characters</h2>
+                        <!-- <a href="#" class="text-blue-600 font-semibold text-sm hover:text-blue-700">View All</a> -->
+                    </div>
+
+                    <div class="space-y-4">
+                        <!-- English -->
+                        <a href="/english"
+                            class="block bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-xl p-4 flex items-center gap-4 hover:scale-105 transition-transform">
+                            <div class="w-16 h-16 rounded-full border-2 border-white/30 overflow-hidden flex-shrink-0">
+                                <img src="/image/english.jpg" alt="English Teacher" class="w-full h-full object-cover"
+                                    onerror="this.src='https://ui-avatars.com/api/?name=English+Teacher&background=ffc107&color=000'" />
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-base sm:text-lg text-black">English Tutor</h4>
+                                <p class="text-black/90 text-sm sm:text-base">Practice your conversation skills!</p>
+                            </div>
+                        </a>
+
+                        <!-- Doctor -->
+                        <a href="/doctor"
+                            class="block bg-gradient-to-r from-cyan-500 to-blue-500 text-white rounded-xl p-4 flex items-center gap-4 hover:scale-105 transition-transform">
+                            <div class="w-16 h-16 rounded-full border-2 border-white/30 overflow-hidden flex-shrink-0">
+                                <img src="/image/doctor.jpg" alt="Doctor" class="w-full h-full object-cover"
+                                    onerror="this.src='https://ui-avatars.com/api/?name=Doctor&background=17a2b8&color=fff'" />
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-base sm:text-lg text-black">Medical Doctor</h4>
+                                <p class="text-black/90 text-sm sm:text-base">Get health advice and information!</p>
+                            </div>
+                        </a>
+
+                        <!-- Lawyer -->
+                        <a href="/lawyer"
+                            class="block bg-gradient-to-r from-green-500 to-teal-500 text-white rounded-xl p-4 flex items-center gap-4 hover:scale-105 transition-transform">
+                            <div class="w-16 h-16 rounded-full border-2 border-white/30 overflow-hidden flex-shrink-0">
+                                <img src="/image/lawer.jpg" alt="Lawyer" class="w-full h-full object-cover"
+                                    onerror="this.src='https://ui-avatars.com/api/?name=Lawyer&background=10b981&color=fff'" />
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-base sm:text-lg text-black">Legal Advisor</h4>
+                                <p class="text-black/90 text-sm sm:text-base">
+                                    Legal guidance and contract review!
+                                </p>
+                            </div>
+                        </a>
+                    </div>
+                </section>
+
+                <!-- Platform News -->
+                <section class="bg-white rounded-xl shadow-sm border p-4 sm:p-6">
+                    <h2 class="text-lg sm:text-xl font-bold text-gray-800 mb-6">Platform News</h2>
+                    <div class="space-y-4 text-sm sm:text-base">
+                        <div class="pb-4 border-b border-gray-200">
+                            <h4 class="font-semibold text-gray-800 flex items-center gap-2 mb-1">
+                                <i class="fas fa-language text-blue-600"></i> Translation Tool
+                            </h4>
+                            <p class="text-gray-600">
+                                Quickly translate text between different languages.
+                            </p>
+                        </div>
+                        <div class="pb-4 border-b border-gray-200">
+                            <h4 class="font-semibold text-gray-800 flex items-center gap-2 mb-1">
+                                <i class="fas fa-book text-green-600"></i> Dictionary Feature
+                            </h4>
+                            <p class="text-gray-600">
+                                Look up word definitions and meanings instantly.
+                            </p>
+                        </div>
+                        <div class="pb-4">
+                            <h4 class="font-semibold text-gray-800 flex items-center gap-2 mb-1">
+                                <i class="fas fa-robot text-purple-600"></i> Enhanced AI Characters
+                            </h4>
+                            <p class="text-gray-600">
+                                Our AI characters now have improved conversation capabilities.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+</div>
+
+<script>
+    // Interactive functionality
+    document.addEventListener('DOMContentLoaded', function () {
+        // Load recent chats
+        loadRecentChats();
+    });
+
+    // Load recent chats function (unchanged)
+    function loadRecentChats() {
+        fetch('/api/recent-chats')
+            .then(response => response.json())
+            .then(data => {
+                const container = document.getElementById('recent-chats-container');
+
+                if (data.success && data.chats.length > 0) {
+                    let html = '';
+
+                    data.chats.forEach(chat => {
+                        const characterColors = {
+                            'english_teacher': 'bg-yellow-500',
+                            'doctor': 'bg-red-500',
+                            'lawyer': 'bg-green-500'
+                        };
+
+                        const imagePaths = {
+                            'english_teacher': '/image/english.jpg',
+                            'doctor': '/image/doctor.jpg',
+                            'lawyer': '/image/lawer.jpg'
+                        };
+
+                        const defaultImage = {
+                            'english_teacher': 'https://ui-avatars.com/api/?name=English+Teacher&background=ffc107&color=000',
+                            'doctor': 'https://ui-avatars.com/api/?name=Doctor&background=dc3545&color=fff',
+                            'lawyer': 'https://ui-avatars.com/api/?name=Lawyer&background=28a745&color=fff'
+                        };
+
+                        const bgColor = characterColors[chat.character] || 'bg-blue-500';
+                        const imageUrl = imagePaths[chat.character] || '/image/default.jpg';
+
+                        // Different click behavior for real vs demo chats
+                        const onClick = chat.is_real ?
+                            `openChat('${chat.character}')` :
+                            `startChatWith('${chat.character}')`;
+
+                        html += `
+                        <div onclick="${onClick}" 
+                            class="flex items-center gap-4 p-4 border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors cursor-pointer">
+                            <div class="w-12 h-12 rounded-full ${bgColor} flex-shrink-0 overflow-hidden">
+                                <img src="${imageUrl}" alt="${chat.character_name}" 
+                                    class="w-full h-full object-cover"
+                                    onerror="this.src='${defaultImage[chat.character]}'">
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <h4 class="font-semibold text-gray-800">${chat.character_name}</h4>
+                                <p class="text-gray-600 text-sm truncate">${chat.display_message}</p>
+                                ${!chat.is_real ? '<p class="text-xs text-blue-500 mt-1">Click to start chatting</p>' : ''}
+                            </div>
+                            <div class="text-gray-500 text-sm">${chat.time_ago}</div>
+                        </div>
+                        `;
+                    });
+
+                    container.innerHTML = html;
+                } else {
+                    container.innerHTML = `
+                        <div class="text-center py-8">
+                            <i class="fas fa-comments text-4xl text-gray-300 mb-2"></i>
+                            <p class="text-gray-500">No recent chats yet</p>
+                            <p class="text-sm text-gray-400">Start a conversation with any character!</p>
+                        </div>
+                    `;
+                }
+            })
+            .catch(error => {
+                console.log('Error loading recent chats:', error);
+                document.getElementById('recent-chats-container').innerHTML = `
+                    <div class="text-center py-8 text-red-500">
+                        <i class="fas fa-exclamation-triangle text-2xl mb-2"></i>
+                        <p>Error loading recent chats</p>
+                        <button onclick="loadRecentChats()" class="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+                            Retry
+                        </button>
+                    </div>
+                `;
+            });
+    }
+
+    function startChatWith(character) {
+        const routes = {
+            'english_teacher': '/english',
+            'doctor': '/doctor',
+            'lawyer': '/lawyer'
+        };
+
+        const route = routes[character] || '/english';
+        window.location.href = route;
+    }
+
+    // Auto-refresh recent chats every 30 seconds
+    function startAutoRefresh() {
+        setInterval(() => {
+            if (document.visibilityState === 'visible') {
+                loadRecentChats();
+            }
+        }, 30000);
+    }
+
+    // Initialize all functionality when page loads
+    function initializeDashboard() {
+        startAutoRefresh();
+    }
+
+    // Call initialization
+    document.addEventListener('DOMContentLoaded', function () {
+        initializeDashboard();
+    });
+
+    
+</script>
+
+<style>
+    @media (max-width: 768px) {
+        .ml-64 {
+            margin-left: 0 !important;
+        }
+    }
+
+    .fixed.inset-y-0.left-0 {
+        scrollbar-width: thin;
+        scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+    }
+
+    .fixed.inset-y-0.left-0::-webkit-scrollbar {
+        width: 4px;
+    }
+
+    .fixed.inset-y-0.left-0::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    .fixed.inset-y-0.left-0::-webkit-scrollbar-thumb {
+        background-color: rgba(255, 255, 255, 0.3);
+        border-radius: 20px;
+    }
+
+    .transition-transform {
+        transition: transform 0.2s ease-in-out;
+    }
+
+    .transition-colors {
+        transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,220 @@
+{% extends "index.html" %}
+
+{% block title %}Lawyer Chat{% endblock %}
+
+{% block content %}
+    <!-- Sidebar -->
+  
+
+    <!-- Main Content -->
+    <main class="ml-64 min-h-screen bg-white p-6">
+
+        <form action="/translate" method="POST" onsubmit="return copyTextToHidden()">
+            <div class="translator">
+                <!-- Source Box -->
+                <div class="box" id="source-box">
+                    <div class="languages" id="source-lang">
+                        <span class="active" data-lang="English">English</span>
+                    </div>
+                    <textarea id="source-text" placeholder="Enter text..."></textarea>
+                    <!-- Clear Button -->
+                    <button type="button" class="clear-btn" onclick="clearSourceText()">×</button>
+                </div>
+
+                <!-- Swap Arrow -->
+                <div class="swap-btn" onclick="swapLanguages()">⇄</div>
+
+                <!-- Target Box -->
+                <div class="box" id="target-box">
+                    <div class="languages" id="target-lang">
+                        <span class="active" data-lang="Myanmar (Burmese)">Myanmar (Burmese)</span>
+                    </div>
+                    <div class="label" id="translated-label">Translation</div>
+                    <textarea id="target-text" readonly>{{ translate }}</textarea>
+                </div>
+            </div>
+
+            <!-- Hidden input to send actual text -->
+            <input type="hidden" name="text" id="hidden-text">
+
+            <!-- Translate Button -->
+            <div class="translate-btn-wrapper">
+                <button type="submit">Translate</button>
+            </div>
+        </form>
+    </main>
+
+    <script>
+        function swapLanguages() {
+            const sourceLang = document.querySelector('#source-lang .active');
+            const targetLang = document.querySelector('#target-lang .active');
+            const sourceText = document.getElementById('source-text');
+            const targetText = document.getElementById('target-text');
+
+            if (sourceLang && targetLang) {
+                const tempLang = sourceLang.innerText;
+                sourceLang.innerText = targetLang.innerText;
+                targetLang.innerText = tempLang;
+
+                const tempData = sourceLang.dataset.lang;
+                sourceLang.dataset.lang = targetLang.dataset.lang;
+                targetLang.dataset.lang = tempData;
+            }
+
+            const tempText = sourceText.value;
+            sourceText.value = targetText.value;
+            targetText.value = tempText;
+        }
+
+        function copyTextToHidden() {
+            const sourceText = document.getElementById('source-text').value.trim();
+            document.getElementById('hidden-text').value = sourceText;
+            return true; // allow form to submit
+        }
+
+        function clearSourceText() {
+            document.getElementById('source-text').value = '';
+        }
+    </script>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 1rem;
+            background: #f1f3f4;
+        }
+
+        .translator {
+            display: flex;
+            flex-direction: row;
+            gap: 1rem;
+            max-width: 1000px;
+            margin: auto;
+            flex-wrap: wrap;
+        }
+
+        .box {
+            position: relative;
+            background: white;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            flex: 1 1 300px;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            min-height: 300px;
+        }
+
+        .languages {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.5rem;
+        }
+
+        .languages span {
+            cursor: pointer;
+            color: #555;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+        }
+
+        .languages .active {
+            color: #1a73e8;
+            border-bottom: 2px solid #1a73e8;
+        }
+
+        textarea {
+            flex: 1;
+            border: none;
+            resize: none;
+            font-size: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        textarea:focus {
+            outline: none;
+        }
+
+        .swap-btn {
+            align-self: center;
+            font-size: 2rem;
+            background: white;
+            border: 2px solid #1a73e8;
+            color: #1a73e8;
+            border-radius: 50%;
+            padding: 0.5rem 0.8rem;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            height: 50px;
+            width: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .swap-btn:hover {
+            transform: rotate(180deg);
+        }
+
+        .label {
+            font-size: 1.2rem;
+            color: #777;
+        }
+
+        @media (max-width: 768px) {
+            .translator {
+                flex-direction: column;
+            }
+
+            .swap-btn {
+                margin: 1rem auto;
+            }
+        }
+
+        .translate-btn-wrapper {
+            width: 100%;
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+
+        .translate-btn-wrapper button {
+            background-color: #1a73e8;
+            color: white;
+            border: none;
+            padding: 0.7rem 2rem;
+            border-radius: 6px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .translate-btn-wrapper button:hover {
+            background-color: #0c5bd4;
+        }
+
+        /* Clear Button Style */
+        .clear-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: transparent;
+            border: none;
+            font-size: 1.2rem;
+            color: #888;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        .clear-btn:hover {
+            color: #f44336;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
+
+
+{% endblock %}

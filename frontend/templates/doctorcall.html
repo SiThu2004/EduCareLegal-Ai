@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Doctor Call</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .pulse-animation {
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    .typing-indicator::after {
+      content: '...';
+      animation: dots 1.5s steps(3, end) infinite;
+    }
+
+    @keyframes dots {
+      0%, 20% { content: '.'; }
+      40% { content: '..'; }
+      60%, 100% { content: '...'; }
+    }
+
+    .sidebar {
+      position: fixed;
+      top: 0;
+      right: -400px;
+      width: 350px;
+      height: 100vh;
+      background-color: #1e293b;
+      transition: right 0.3s ease;
+      z-index: 100;
+      box-shadow: -5px 0 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .sidebar.open {
+      right: 0;
+    }
+
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 99;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .overlay.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    @media (max-width: 640px) {
+      .sidebar { width: 85%; right: -85%; }
+    }
+
+    .message-bubble {
+      max-width: 80%;
+      padding: 0.75rem;
+      border-radius: 1rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .user-message {
+      background-color: #3b82f6;
+      color: white;
+      margin-left: auto;
+      border-bottom-right-radius: 0.25rem;
+    }
+
+    .doctor-message {
+      background-color: #10b981;
+      color: white;
+      margin-right: auto;
+      border-bottom-left-radius: 0.25rem;
+    }
+  </style>
+</head>
+
+<body class="bg-gray-900 min-h-screen flex items-center justify-center p-4">
+  <!-- Overlay for sidebar -->
+  <div class="overlay" id="overlay"></div>
+
+  <!-- Sidebar for conversation -->
+  <div class="sidebar" id="sidebar">
+    <div class="p-4 h-full flex flex-col">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-xl font-bold text-white">Conversation</h2>
+        <button id="closeSidebar" class="text-gray-400 hover:text-white">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+      <div id="conversationHistory" class="flex-1 overflow-y-auto pr-2 space-y-2"></div>
+    </div>
+  </div>
+
+  <!-- Main content -->
+  <div class="text-center text-white space-y-6 max-w-md w-full relative">
+    <!-- Doctor Avatar with Pulse Animation when listening -->
+    <div class="flex justify-center">
+      <img src="/static/image/doctor.jpg" alt="Dr. Smith" 
+           class="w-32 h-32 rounded-full border-4 border-green-500 object-cover pulse-animation" 
+           id="doctorAvatar">
+    </div>
+
+    <!-- Status Information -->
+    <div>
+      <h1 class="text-2xl font-bold text-white">Dr.Kyaw</h1>
+      <p class="text-gray-300 text-lg mt-1" id="statusText">Ready to consult</p>
+    </div>
+
+    <!-- Controls -->
+    <div class="flex justify-center space-x-8 mt-6">
+      <!-- Conversation Button -->
+      <button id="toggleConversationBtn" class="flex flex-col items-center group">
+        <div class="bg-gray-800 hover:bg-gray-700 p-4 rounded-full transition-all duration-300 group-hover:scale-110">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+          </svg>
+        </div>
+        <span class="text-sm mt-2 text-white">Conversation</span>
+      </button>
+
+      <!-- Mute Button -->
+      <button id="muteBtn" class="flex flex-col items-center group">
+        <div class="bg-gray-800 hover:bg-gray-700 p-4 rounded-full transition-all duration-300 group-hover:scale-110">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="currentColor" viewBox="0 0 24 24" id="micIcon">
+            <path d="M12 1a3 3 0 00-3 3v8a3 3 0 106 0V4a3 3 0 00-3-3z" />
+            <path d="M19 11a7 7 0 01-14 0H3a9 9 0 0018 0h-2z" />
+            <path d="M12 21v-3" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white hidden" fill="none" viewBox="0 0 24 24" 
+               stroke="currentColor" stroke-width="2" id="mutedIcon">
+            <path stroke-linecap="round" stroke-linejoin="round" 
+                  d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" 
+                  clip-rule="evenodd" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2" />
+          </svg>
+        </div>
+        <span class="text-sm mt-2 text-white" id="muteText">Mute</span>
+      </button>
+
+      <!-- Hang Up Button -->
+      <button id="hangUpBtn" class="flex flex-col items-center group">
+        <div class="bg-red-600 hover:bg-red-700 p-4 rounded-full transition-all duration-300 group-hover:scale-110">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24"
+            stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </div>
+        <span class="text-sm mt-2 text-white">End Call</span>
+      </button>
+    </div>
+
+    <!-- <p class="text-gray-400 text-sm mt-6">Press the microphone button to start speaking</p> -->
+  </div>
+
+  <script>
+    let recognition;
+    let isMuted = false;
+    let isProcessing = false;
+    let currentAudio = null;
+
+    function addToConversation(sender, message, isTemporary = false) {
+      const conversation = document.getElementById('conversationHistory');
+      const messageId = 'msg-' + Date.now();
+      const messageDiv = document.createElement('div');
+      messageDiv.id = messageId;
+      messageDiv.className = `message-bubble ${sender === 'user' ? 'user-message' : 'doctor-message'}`;
+      messageDiv.innerHTML = `<div class="font-semibold">${sender === 'user' ? 'You' : 'Dr.Kyaw'}</div>
+                              <div class="mt-1">${message}</div>`;
+      conversation.appendChild(messageDiv);
+      conversation.scrollTop = conversation.scrollHeight;
+      return isTemporary ? messageId : null;
+    }
+
+    function updateConversationMessage(id, sender, newMessage) {
+      const messageDiv = document.getElementById(id);
+      if (messageDiv) {
+        messageDiv.innerHTML = `<div class="font-semibold">${sender === 'user' ? 'You' : 'Dr.Kyaw'}</div>
+                                <div class="mt-1">${newMessage}</div>`;
+      }
+    }
+
+    function updateStatus(text) {
+      document.getElementById('statusText').textContent = text;
+    }
+
+    function showError(message) {
+      const errorDiv = document.createElement('div');
+      errorDiv.className = 'bg-red-900 text-white p-3 rounded mb-3';
+      errorDiv.textContent = message;
+      document.getElementById('conversationHistory').prepend(errorDiv);
+    }
+
+    function playAudio(url) {
+      return new Promise(resolve => {
+        if (currentAudio) currentAudio.pause();
+        currentAudio = new Audio(url);
+        currentAudio.onended = resolve;
+        currentAudio.onerror = resolve;
+        currentAudio.play();
+      });
+    }
+
+    async function sendToServer(message) {
+      try {
+        const typingId = addToConversation('doctor', '<span class="typing-indicator">Thinking</span>', true);
+
+        // Load settings from doctor.html
+        const doctorSettings = JSON.parse(localStorage.getItem('doctorSettings')) || {
+          voice: 'default',
+          speed: 'normal'
+        };
+
+        console.log('🔊 Using settings from doctor.html:', doctorSettings);
+
+        const response = await fetch("/doctor/call", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ 
+            message, 
+            voice: doctorSettings.voice, 
+            speed: doctorSettings.speed 
+          })
+        });
+        
+        const data = await response.json();
+        updateConversationMessage(typingId, 'doctor', data.text || 'Error. Please try again.');
+        if (data.audio) await playAudio(data.audio);
+      } catch (e) {
+        console.error(e);
+        addToConversation('doctor', "Error. Please try again.");
+      }
+    }
+
+    function startRecognition() {
+      if (isMuted || isProcessing) return;
+      recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+      recognition.lang = "en-US";
+      recognition.interimResults = false;
+      recognition.maxAlternatives = 1;
+      recognition.continuous = false;
+
+      recognition.onstart = () => {
+        updateStatus("Listening...");
+        document.getElementById('doctorAvatar').classList.add('pulse-animation');
+      };
+
+      recognition.onresult = async (event) => {
+        isProcessing = true;
+        const text = event.results[0][0].transcript.trim();
+        addToConversation('user', text);
+        updateStatus("Processing...");
+        try { await sendToServer(text); } 
+        catch(e){ showError("Error processing request"); } 
+        finally { isProcessing = false; if (!isMuted) setTimeout(startRecognition, 500); }
+      };
+
+      recognition.onerror = (e) => {
+        console.error(e.error);
+        isProcessing = false;
+        if (!isMuted && e.error !== "aborted") setTimeout(startRecognition, 2000);
+      };
+
+      recognition.onend = () => {
+        document.getElementById('doctorAvatar').classList.remove('pulse-animation');
+        if (!isMuted && !isProcessing) updateStatus("Ready to consult");
+      };
+
+      recognition.start();
+    }
+
+    document.getElementById('toggleConversationBtn').addEventListener('click', toggleSidebar);
+    document.getElementById('closeSidebar').addEventListener('click', toggleSidebar);
+    document.getElementById('overlay').addEventListener('click', toggleSidebar);
+
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('open');
+      document.getElementById('overlay').classList.toggle('active');
+    }
+
+    document.getElementById("muteBtn").addEventListener("click", () => {
+      isMuted = !isMuted;
+      if (isMuted) { 
+        if(recognition) recognition.stop(); 
+        document.getElementById("micIcon").classList.add('hidden'); 
+        document.getElementById("mutedIcon").classList.remove('hidden'); 
+        document.getElementById("muteText").textContent = "Unmute"; 
+        updateStatus("Microphone muted"); 
+      }
+      else { 
+        document.getElementById("micIcon").classList.remove('hidden'); 
+        document.getElementById("mutedIcon").classList.add('hidden'); 
+        document.getElementById("muteText").textContent = "Mute"; 
+        updateStatus("Starting..."); 
+        startRecognition(); 
+      }
+    });
+
+    document.getElementById("hangUpBtn").addEventListener("click", () => {
+      if (recognition) recognition.abort();
+      if (currentAudio) currentAudio.pause();
+      window.location.href = "/doctor";
+    });
+
+    window.onload = () => { startRecognition(); };
+  </script>
+</body>
+</html>

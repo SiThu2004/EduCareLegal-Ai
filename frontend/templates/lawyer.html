@@ -1,0 +1,847 @@
+{% extends "index.html" %}
+
+{% block title %}Lawyer Chat{% endblock %}
+
+{% block content %}
+<!-- Right Sidebar for settings -->
+<div class="right-sidebar" id="rightSidebar">
+    <div class="p-6">
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-xl font-bold">Lawyer Settings</h2>
+            <button id="closeRightSidebar" class="text-gray-500 hover:text-gray-700">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+
+        <div class="space-y-6">
+            <!-- Character Info -->
+            <div class="flex items-center space-x-4">
+                <img src="/image/lawer.jpg" alt="Lawyer" class="w-16 h-16 rounded-full">
+                <div>
+                    <h3 class="font-semibold">Legal Advisor</h3>
+                    <p class="text-sm text-gray-500">Legal Professional</p>
+                </div>
+            </div>
+
+            <!-- Settings Sections -->
+            <div class="space-y-4">
+                <div>
+                    <h4 class="font-medium mb-2">Voice</h4>
+                    <select id="voiceSelect" class="w-full p-2 border border-gray-300 rounded">
+                        <!-- <option value="myanmar">U Khin Zaw</option> -->
+                        <option value="default">Robert</option>
+
+                        <option value="male1">James</option>
+                        <option value="male3">William</option>
+                        <!-- <option value="female2">Female Voice (Elizabeth)</option> -->
+                    </select>
+                </div>
+            </div>
+
+            <div>
+                <h4 class="font-medium mb-2">Speaking Speed</h4>
+                <select id="speedSelect" class="w-full p-2 border border-gray-300 rounded">
+                    <option value="slow">Slow</option>
+                    <option value="normal" selected>Normal</option>
+                    <option value="fast">Fast</option>
+                </select>
+            </div>
+
+
+
+            <div>
+                <h4 class="font-medium mb-2">Interaction History</h4>
+                <div class="bg-gray-100 p-3 rounded">
+                    <p class="text-sm" id="historyCount">Loading...</p>
+                </div>
+            </div>
+
+            <div>
+                <!-- <h4 class="font-medium mb-2">Case Notes</h4>
+                <div class="bg-gray-100 p-3 rounded">
+                    <p class="text-sm">No case notes</p>
+                </div> -->
+            </div>
+        </div>
+
+        <button id="saveSettingsBtn"
+            class="w-full py-2 bg-purple-500 text-white rounded hover:bg-purple-600 transition">
+            Save Settings
+        </button>
+    </div>
+</div>
+
+<!-- Overlay -->
+<div class="overlay fixed inset-0 bg-black bg-opacity-40 opacity-0 invisible transition-opacity duration-300 ease-in-out z-40"
+    id="overlay"></div>
+
+<!-- Main Content -->
+<main class="ml-0 sm:ml-64 min-h-screen bg-white p-4 sm:p-6">
+    <!-- Header -->
+    <header
+        class="sticky top-0 z-40 flex flex-wrap sm:flex-nowrap items-center justify-between mb-4 border-b border-gray-300 pb-3 bg-white px-2 sm:px-4">
+        <div class="flex items-center space-x-3 mb-2 sm:mb-0">
+            <img src="/image/lawer.jpg" alt="Avatar" class="w-8 h-8 rounded-full border border-gray-300">
+            <h1 class="text-base sm:text-xl font-semibold">Legal Advisor</h1>
+        </div>
+        <div class="flex items-center space-x-2 sm:space-x-3">
+            <a href="/lawyer/lawyercall">
+                <button
+                    class="p-2 rounded-full border border-gray-400 hover:bg-gray-100 hover:border-green-500 transition">
+                    <svg class="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.17 12.17 0 00.7 2.81 2 2 0 01-.45 2.11L8 10a16 16 0 006 6l1.36-1.36a2 2 0 012.11-.45 12.17 12.17 0 002.81.7A2 2 0 0122 16.92z" />
+                    </svg>
+                </button>
+            </a>
+
+            <button id="openRightSidebar"
+                class="p-2 rounded-full border border-gray-400 hover:bg-gray-100 hover:border-red-500 transition">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                    <circle cx="5" cy="12" r="2" />
+                    <circle cx="12" cy="12" r="2" />
+                    <circle cx="19" cy="12" r="2" />
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <!-- Chat Section -->
+    <div class="flex flex-col items-center">
+        <img src="/image/lawer.jpg" alt="Profile" class="w-16 h-16 sm:w-20 sm:h-20 rounded-full shadow mb-4">
+        <h2 class="text-lg sm:text-2xl font-semibold mb-1">Legal Advisor</h2>
+        <p class="text-gray-600 text-xs sm:text-sm mb-6 text-center px-4">Legal Advisor - Here to discuss your legal
+            concerns</p>
+
+        <div id="chatBox" class="w-full max-w-lg space-y-4 mt-4 overflow-y-auto no-scrollbar h-[60vh] sm:h-[65vh]">
+            <!-- Default Message -->
+            <div class="bg-purple-50 rounded-2xl p-4 shadow flex items-start space-x-3">
+                <img src="/image/lawer.jpg" alt="Avatar" class="w-10 h-10 rounded-full">
+                <div>
+                    <p class="font-semibold text-sm mb-1 text-purple-800">Legal Advisor</p>
+                    <p class="text-sm text-gray-800">Hello! I'm your Legal Advisor. I'm here to provide general legal
+                        information and guidance. Please remember that this is not a substitute for professional legal
+                        advice.</p>
+                    <!-- <p class="text-xs text-gray-500 mt-2">⚖️ Legal Disclaimer: Informational only, not legal advice.</p> -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Message Input -->
+        <!-- <div class="sticky bottom-4 w-full max-w-lg mt-6 px-2">
+            <div class="flex items-center rounded-full border border-gray-300 shadow p-2 bg-white">
+                <input id="userInput" type="text" placeholder="Describe your legal concern…"
+                    class="flex-grow px-3 py-2 rounded-full focus:outline-none text-sm bg-white text-gray-800" />
+                <button onclick="sendMessage()" class="p-2 hover:bg-gray-200 rounded-full">
+                    <svg class="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M22 2L11 13" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M22 2L15 22L11 13L2 9L22 2Z" />
+                    </svg>
+                </button>
+            </div>
+            <p class="text-[10px] sm:text-xs text-gray-500 text-center mt-2">
+                For urgent legal matters, contact a licensed attorney in your jurisdiction.
+            </p>
+        </div> -->
+
+        <!-- Message Input -->
+        <div class="sticky bottom-4 w-full max-w-lg mt-6 px-2">
+            <div class="flex items-center rounded-full border border-gray-300 shadow p-2 bg-white">
+                <input id="userInput" type="text" placeholder="Describe your legal concern…"
+                    class="flex-grow px-3 py-2 rounded-full focus:outline-none text-sm bg-white text-gray-800" />
+
+                <!-- Mic Button -->
+                <button id="micBtn" class="p-2 hover:bg-gray-200 rounded-full mr-1">
+                    <svg class="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+                    </svg>
+                </button>
+
+                <!-- Send Button -->
+                <button onclick="sendMessage()" class="p-2 hover:bg-gray-200 rounded-full">
+                    <svg class="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M22 2L11 13" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M22 2L15 22L11 13L2 9L22 2Z" />
+                    </svg>
+                </button>
+            </div>
+            <!-- <p class="text-[10px] sm:text-xs text-gray-500 text-center mt-2">
+                For urgent legal matters, contact a licensed attorney in your jurisdiction.
+            </p> -->
+        </div>
+    </div>
+</main>
+
+<!-- Scripts -->
+<script>
+
+    
+    // Lawyer Settings and Chat Functions
+    let currentLawyerSettings = {
+        voice: 'default',
+        speed: 'normal'
+    };
+
+    let chatHistoryLoaded = false;
+
+    // Voice Recognition Variables
+    let recognition;
+    let isListening = false;
+    let currentLang = "my-MM"; // Myanmar language code
+
+    // Initialize when page loads
+    document.addEventListener('DOMContentLoaded', function () {
+        console.log(' Lawyer page loaded');
+
+        loadLawyerSettings();
+        setupLawyerEventListeners();
+        loadChatHistory();
+        setupVoiceRecognition();
+
+        // Setup enter key for sending message
+        document.getElementById('userInput').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+    });
+
+    // Setup all event listeners
+    function setupLawyerEventListeners() {
+        // Character settings
+        document.getElementById('openRightSidebar')?.addEventListener('click', openLawyerSettings);
+        document.getElementById('closeRightSidebar')?.addEventListener('click', closeLawyerSettings);
+        document.getElementById('overlay')?.addEventListener('click', closeLawyerSettings);
+        document.getElementById('saveSettingsBtn')?.addEventListener('click', saveLawyerSettings);
+    }
+
+  
+
+    // Initialize voice recognition
+    function initVoiceRecognition() {
+        if ('webkitSpeechRecognition' in window) {
+            recognition = new webkitSpeechRecognition();
+            recognition.continuous = false;
+            recognition.interimResults = false;
+            recognition.lang = currentLang;
+
+            recognition.onstart = function () {
+                console.log(" Voice recognition started - Myanmar");
+                isListening = true;
+                updateMicButton();
+                showListeningIndicator();
+            };
+
+            recognition.onresult = function (event) {
+                const transcript = event.results[0][0].transcript.trim();
+                console.log("မြန်မာစကား ကြားလိုက်ရသည်:", transcript);
+
+                // Add the recognized text to input field (NO AUTO SEND)
+                document.getElementById('userInput').value = transcript;
+
+                hideListeningIndicator();
+
+                // Show instruction to click send button
+                showSendInstruction();
+            };
+
+            recognition.onerror = function (event) {
+                console.error("Voice recognition error:", event.error);
+                isListening = false;
+                updateMicButton();
+                hideListeningIndicator();
+                hideSendInstruction();
+
+                if (event.error === 'not-allowed') {
+                    alert("မိုက်ခရိုဖုန်း ခွင့်ပြုချက် လိုအပ်ပါသည်။ ကျေးဇူးပြု၍ browser setting မှ microphone permission ပေးပါ။");
+                } else if (event.error === 'no-speech') {
+                    alert("စကားပြောသံ မကြားရပါ။ ထပ်မံကြိုးစားကြည့်ပါ။");
+                }
+            };
+
+            recognition.onend = function () {
+                console.log("🎤 Voice recognition ended");
+                isListening = false;
+                updateMicButton();
+                hideListeningIndicator();
+            };
+        } else {
+            console.error("Browser doesn't support speech recognition");
+            alert("သင့် browser သည် voice recognition ကို မပံ့ပိုးပါ။ Chrome browser ကို အသုံးပြုပါ။");
+        }
+    }
+
+    // Toggle microphone
+    function toggleMic() {
+        if (!recognition) {
+            initVoiceRecognition();
+        }
+
+        if (isListening) {
+            recognition.stop();
+            hideSendInstruction();
+        } else {
+            try {
+                // Clear any previous instruction
+                hideSendInstruction();
+                recognition.start();
+            } catch (error) {
+                console.error("Error starting recognition:", error);
+                initVoiceRecognition();
+                recognition.start();
+            }
+        }
+    }
+
+    // Update mic button appearance
+    function updateMicButton() {
+        const micBtn = document.getElementById('micBtn');
+        const micIcon = micBtn.querySelector('svg');
+
+        if (isListening) {
+            // Listening state - red color with animation
+            micBtn.classList.add('bg-red-100', 'border-red-400', 'recording-pulse');
+            micBtn.classList.remove('hover:bg-gray-200');
+            micIcon.classList.add('text-red-600');
+            micIcon.classList.remove('text-gray-600');
+        } else {
+            // Not listening state
+            micBtn.classList.remove('bg-red-100', 'border-red-400', 'recording-pulse');
+            micBtn.classList.add('hover:bg-gray-200');
+            micIcon.classList.remove('text-red-600');
+            micIcon.classList.add('text-gray-600');
+        }
+    }
+
+    // Show listening indicator
+    // function showListeningIndicator() {
+    //     let indicator = document.getElementById('listeningIndicator');
+    //     if (!indicator) {
+    //         indicator = document.createElement('div');
+    //         indicator.id = 'listeningIndicator';
+    //         indicator.className = 'fixed bottom-20 left-1/2 transform -translate-x-1/2 bg-red-500 text-white px-4 py-2 rounded-full shadow-lg z-50';
+          
+    //         document.body.appendChild(indicator);
+    //     }
+    //     indicator.style.display = 'block';
+    // }
+
+    // Hide listening indicator
+    function hideListeningIndicator() {
+        const indicator = document.getElementById('listeningIndicator');
+        if (indicator) {
+            indicator.style.display = 'none';
+        }
+    }
+
+    // Show send instruction
+    // function showSendInstruction() {
+    //     let instruction = document.getElementById('sendInstruction');
+    //     if (!instruction) {
+    //         instruction = document.createElement('div');
+    //         instruction.id = 'sendInstruction';
+    //         instruction.className = 'fixed bottom-32 left-1/2 transform -translate-x-1/2 bg-blue-500 text-white px-4 py-2 rounded-full shadow-lg z-50';
+    //         instruction.innerHTML = `
+    //         <div class="flex items-center space-x-2">
+    //             <span class="text-sm">📝 Send ခလုတ်ကို နှိပ်ပါ</span>
+    //         </div>
+    //     `;
+    //         document.body.appendChild(instruction);
+    //     }
+    //     instruction.style.display = 'block';
+
+    //     // Auto hide after 5 seconds
+    //     setTimeout(() => {
+    //         hideSendInstruction();
+    //     }, 5000);
+    // }
+
+    // Hide send instruction
+    function hideSendInstruction() {
+        const instruction = document.getElementById('sendInstruction');
+        if (instruction) {
+            instruction.style.display = 'none';
+        }
+    }
+
+    // Setup event listeners for voice recognition
+    function setupVoiceRecognition() {
+        const micBtn = document.getElementById('micBtn');
+        if (micBtn) {
+            micBtn.addEventListener('click', toggleMic);
+        }
+
+        // Initialize voice recognition
+        initVoiceRecognition();
+    }
+
+    // =========================
+    // CHARACTER SETTINGS FUNCTIONS
+    // =========================
+
+    function openLawyerSettings() {
+        document.getElementById('rightSidebar').classList.add('open');
+        document.getElementById('overlay').classList.add('active');
+        updateLawyerSettingsDisplay();
+    }
+
+    function closeLawyerSettings() {
+        document.getElementById('rightSidebar').classList.remove('open');
+        document.getElementById('overlay').classList.remove('active');
+    }
+
+    function loadLawyerSettings() {
+        try {
+            const saved = localStorage.getItem('lawyerSettings');
+            if (saved) {
+                currentLawyerSettings = JSON.parse(saved);
+            }
+            console.log(' Loaded lawyer settings:', currentLawyerSettings);
+        } catch (e) {
+            console.error(' Error loading lawyer settings:', e);
+        }
+    }
+
+    function saveLawyerSettings() {
+        try {
+            const settings = {
+                voice: document.getElementById('voiceSelect').value,
+                speed: document.getElementById('speedSelect').value
+            };
+
+            localStorage.setItem('lawyerSettings', JSON.stringify(settings));
+            currentLawyerSettings = settings;
+            console.log(' Saved lawyer settings:', currentLawyerSettings);
+            alert('Lawyer settings saved successfully!');
+            closeLawyerSettings();
+        } catch (e) {
+            console.error(' Error saving lawyer settings:', e);
+            alert('Error saving settings!');
+        }
+    }
+
+    function updateLawyerSettingsDisplay() {
+        document.getElementById('voiceSelect').value = currentLawyerSettings.voice;
+        document.getElementById('speedSelect').value = currentLawyerSettings.speed;
+    }
+
+    // =========================
+    // CHAT HISTORY FUNCTIONS
+    // =========================
+
+    async function loadChatHistory() {
+        try {
+            console.log(" Loading lawyer chat history...");
+            const response = await fetch('/lawyer/chat-history-api');
+
+            if (response.ok) {
+                const data = await response.json();
+                console.log(" Lawyer chat history loaded:", data.chats?.length || 0, "messages");
+
+                if (data.chats && data.chats.length > 0) {
+                    displayChatHistory(data.chats);
+                    updateHistoryCount(data.chats.length);
+                } else {
+                    updateHistoryCount(0);
+                }
+                chatHistoryLoaded = true;
+            } else {
+                console.error(" Failed to load lawyer chat history:", response.status);
+                updateHistoryCount(0);
+            }
+        } catch (error) {
+            console.error(" Error loading lawyer chat history:", error);
+            updateHistoryCount(0);
+        }
+    }
+
+    function displayChatHistory(chats) {
+        const chatBox = document.getElementById('chatBox');
+        if (!chatBox) return;
+
+        // Clear only the default message if we have actual chats
+        if (chats.length > 0) {
+            const defaultMessage = chatBox.querySelector('.bg-purple-50');
+            chatBox.innerHTML = '';
+            if (defaultMessage) {
+                chatBox.appendChild(defaultMessage);
+            }
+        }
+
+        // Add all chat messages
+        chats.forEach(chat => {
+            if (chat.user_message && chat.bot_reply) {
+                addUserMessageToChat(chat.user_message, false);
+                addLawyerMessageToChat(chat.bot_reply, false);
+            }
+        });
+
+        scrollToBottom();
+    }
+
+    function updateHistoryCount(count) {
+        const historyElement = document.getElementById('historyCount');
+        if (historyElement) {
+            historyElement.textContent = `${count} legal consultations`;
+        }
+    }
+
+    function updateHistoryCountBasedOnChat() {
+        const chatBox = document.getElementById('chatBox');
+        const historyElement = document.getElementById('historyCount');
+
+        if (chatBox && historyElement) {
+            const userMessages = chatBox.querySelectorAll('.bg-blue-100');
+            const count = userMessages.length;
+            historyElement.textContent = `${count} legal consultations`;
+        }
+    }
+
+    // =========================
+    // CHAT FUNCTIONS
+    // =========================
+
+    async function sendMessage() {
+        const input = document.getElementById('userInput');
+        const message = input.value.trim();
+        if (!message) {
+            // Show warning if input is empty
+            showEmptyInputWarning();
+            return;
+        }
+
+        // Clear input immediately
+        input.value = '';
+
+        // Hide any instructions
+        hideSendInstruction();
+
+        console.log(" Sending message to lawyer:", message);
+        addUserMessageToChat(message);
+
+        // Add typing indicator
+        const typingId = 'typing-' + Date.now();
+        addLawyerTypingIndicator(typingId);
+
+        try {
+            const response = await fetch('/lawyer/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message: message })
+            });
+
+            // Remove typing indicator
+            removeTypingIndicator(typingId);
+
+            if (response.ok) {
+                const data = await response.json();
+                console.log(" Lawyer reply received");
+                addLawyerMessageToChat(data.reply);
+
+                // Update history count after new message
+                if (chatHistoryLoaded) {
+                    updateHistoryCountBasedOnChat();
+                }
+            } else if (response.status === 401) {
+                addLawyerMessageToChat("Please login first to consult with the lawyer.");
+            } else {
+                addLawyerMessageToChat("Something went wrong. Please try again.");
+            }
+        } catch (error) {
+            removeTypingIndicator(typingId);
+            console.error(' Network error:', error);
+            addLawyerMessageToChat("Connection error. Please check your internet connection.");
+        }
+    }
+
+    // Show empty input warning
+    // function showEmptyInputWarning() {
+    //     let warning = document.getElementById('emptyInputWarning');
+    //     if (!warning) {
+    //         warning = document.createElement('div');
+    //         warning.id = 'emptyInputWarning';
+    //         warning.className = 'fixed bottom-32 left-1/2 transform -translate-x-1/2 bg-yellow-500 text-white px-4 py-2 rounded-full shadow-lg z-50';
+    //         warning.innerHTML = `
+    //         <div class="flex items-center space-x-2">
+    //             <span class="text-sm">⚠️ စာသားထည့်ပါ သို့မဟုတ် မိုက်ခရိုဖုန်းနှိပ်ပါ</span>
+    //         </div>
+    //     `;
+    //         document.body.appendChild(warning);
+    //     }
+    //     warning.style.display = 'block';
+
+    //     // Auto hide after 3 seconds
+    //     setTimeout(() => {
+    //         warning.style.display = 'none';
+    //     }, 3000);
+    // }
+
+    function addUserMessageToChat(message, scroll = true) {
+        const chatBox = document.getElementById('chatBox');
+        if (!chatBox) return;
+
+        const userMsg = `
+    <div class="flex justify-end mb-4">
+        <div class="flex flex-col items-end space-y-1 max-w-[85%]">
+            <div class="bg-blue-100 text-gray-800 rounded-2xl p-4 shadow-sm">
+                <p class="text-sm leading-relaxed">${message}</p>
+            </div>
+            <span class="text-xs text-gray-500">${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+        </div>
+    </div>
+`;
+        chatBox.insertAdjacentHTML('beforeend', userMsg);
+        if (scroll) {
+            scrollToBottom();
+        }
+    }
+
+    function addLawyerTypingIndicator(id) {
+        const chatBox = document.getElementById('chatBox');
+        if (!chatBox) return;
+
+        const typingMsg = `
+    <div id="${id}" class="flex items-start space-x-3 mb-4">
+        <img src="/image/lawer.jpg" alt="Avatar" class="w-10 h-10 rounded-full flex-shrink-0" />
+        <div class="bg-purple-50 rounded-2xl p-4 shadow-sm max-w-[85%]">
+            <p class="font-semibold text-sm mb-1 text-purple-800">Legal Advisor</p>
+            <div class="flex space-x-1">
+              <p class="text-sm text-gray-500 italic">Typing...</p>
+           </div> 
+        </div>
+    </div>
+`;
+        chatBox.insertAdjacentHTML('beforeend', typingMsg);
+        scrollToBottom();
+    }
+
+    function removeTypingIndicator(id) {
+        const typingElement = document.getElementById(id);
+        if (typingElement) {
+            typingElement.remove();
+        }
+    }
+
+    function addLawyerMessageToChat(message, scroll = true) {
+        const chatBox = document.getElementById('chatBox');
+        if (!chatBox) return;
+
+        const lawyerMsg = `
+    <div class="flex items-start space-x-3 mb-4">
+        <img src="/image/lawer.jpg" alt="Avatar" class="w-10 h-10 rounded-full flex-shrink-0" />
+        <div class="bg-purple-50 rounded-2xl p-4 shadow-sm max-w-[85%]">
+            <p class="font-semibold text-sm mb-2 text-purple-800">Legal Advisor</p>
+            <p class="text-sm text-gray-800 leading-relaxed">${message}</p>
+            <span class="text-xs text-gray-500 mt-2 block">${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+        </div>
+    </div>
+`;
+        chatBox.insertAdjacentHTML('beforeend', lawyerMsg);
+        if (scroll) {
+            scrollToBottom();
+        }
+    }
+
+    function scrollToBottom() {
+        const chatBox = document.getElementById('chatBox');
+        if (chatBox) {
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+    }
+
+    
+    // Clean up audio files when page loads
+    window.addEventListener('load', async function () {
+        try {
+            const response = await fetch('/lawyer/clean-audio', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' }
+            });
+
+            if (!response.ok) {
+                console.error(' Failed to clean audio files');
+            }
+        } catch (error) {
+            console.error(' Error cleaning audio files:', error);
+        }
+    });
+
+    // =========================
+    // UTILITY FUNCTIONS
+    // =========================
+
+    // Stop voice recognition when leaving page
+    window.addEventListener('beforeunload', function () {
+        if (recognition && isListening) {
+            recognition.stop();
+        }
+    });
+
+    // Handle page visibility change
+    document.addEventListener('visibilitychange', function () {
+        if (document.hidden && recognition && isListening) {
+            recognition.stop();
+        }
+    });
+</script>
+
+<!-- CSS Styles - Hide Scroll Bar -->
+<style>
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+
+    .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+
+    .right-sidebar.open {
+        transform: translateX(0);
+    }
+
+    /* Voice Recording Styles */
+    .recording-pulse {
+        animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+        0% {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        50% {
+            transform: scale(1.1);
+            opacity: 0.7;
+        }
+
+        100% {
+            transform: scale(1);
+            opacity: 1;
+        }
+    }
+
+    /* Instruction Styles */
+    #sendInstruction,
+    #emptyInputWarning,
+    #listeningIndicator {
+        animation: fadeIn 0.3s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translate(-50%, 10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translate(-50%, 0);
+        }
+    }
+
+    /* Scrollbar Styles */
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+
+    .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+
+    /* Sidebar Styles */
+    .right-sidebar {
+        transform: translateX(100%);
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .right-sidebar.open {
+        transform: translateX(0);
+    }
+
+    .overlay {
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease-in-out;
+    }
+
+    .overlay.active {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    /* Chat Box Styles */
+    #chatBox {
+        height: 60vh;
+        overflow-y: auto;
+    }
+
+    .sticky {
+        position: sticky;
+        bottom: 24px;
+        background: white;
+        z-index: 10;
+    }
+
+    .overlay.active {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .right-sidebar {
+        transform: translateX(100%);
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .right-sidebar.open {
+        transform: translateX(0);
+    }
+
+    .overlay {
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease-in-out;
+    }
+
+    .overlay.active {
+        opacity: 1;
+        visibility: visible;
+    }
+
+
+    #chatBox {
+        height: 60vh;
+        overflow-y: auto;
+    }
+
+
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+
+
+    .no-scrollbar {
+        -ms-overflow-style: none;
+        /* IE and Edge */
+        scrollbar-width: none;
+        /* Firefox */
+    }
+
+
+    .sticky {
+        position: sticky;
+        bottom: 24px;
+        background: white;
+        z-index: 10;
+    }
+</style>
+
+{% endblock %}

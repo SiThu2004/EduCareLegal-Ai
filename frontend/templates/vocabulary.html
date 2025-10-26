@@ -1,0 +1,266 @@
+{% extends "index.html" %}
+
+{% block title %}Vocabulary Lookup{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-4 sm:py-8">
+    <div class="container mx-auto px-3 sm:px-4">
+        <div class="max-w-6xl mx-auto">
+            <!-- Mobile Menu Button (only shown on small screens) -->
+            <div class="lg:hidden flex justify-between items-center mb-4 bg-white p-4 rounded-2xl shadow-sm">
+                <div class="flex items-center">
+                    <svg class="h-6 w-6 text-indigo-600 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                              d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                    </svg>
+                    <h1 class="text-xl font-bold text-gray-900">Dictionary</h1>
+                </div>
+                <button id="mobileMenuButton" class="p-2 rounded-lg bg-gray-100">
+                    <svg class="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+            </div>
+
+            <div class="flex flex-col lg:flex-row gap-4 sm:gap-6">
+                <!-- Sidebar Navigation (Hidden on mobile, shown on desktop) -->
+                <div id="sidebar" class="hidden lg:block w-full lg:w-64 flex-shrink-0">
+                    <!-- Sidebar content would go here -->
+                </div>
+
+                <!-- Main Content Area -->
+                <div class="flex-1 min-w-0">
+                    <!-- Header -->
+                    <div class="text-center mb-6 sm:mb-8 lg:mb-12">
+                        <div class="hidden lg:flex items-center justify-center mb-4">
+                            <div class="bg-white p-3 rounded-2xl shadow-md mr-4">
+                                <svg class="h-8 w-8 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                          d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                                </svg>
+                            </div>
+                            <h1 class="text-2xl lg:text-3xl font-bold text-gray-900">English to Burmese Dictionary</h1>
+                        </div>
+                        <!-- Mobile Header -->
+                        <div class="lg:hidden mb-4">
+                            <h1 class="text-2xl font-bold text-gray-900 mb-2">English-Burmese Dictionary</h1>
+                            <p class="text-gray-600 text-sm">Search for word translations and examples</p>
+                        </div>
+                    </div>
+
+                    <!-- Search Form with Back Button -->
+                    <div class="bg-white rounded-2xl shadow-lg border border-gray-200 p-4 sm:p-6 mb-6 sm:mb-8">
+                        <!-- Back Button Row -->
+                        <div class="flex items-center justify-between mb-4 sm:mb-6">
+                            <a href="http://localhost:5000/english"> <button class="inline-flex items-center px-3 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition font-medium text-sm sm:text-base">
+                                <svg class="w-4 h-4 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                                </svg>
+                                Back to Chat
+                            </button></a>
+                            <div class="text-right">
+                                <h2 class="text-lg sm:text-xl font-semibold text-gray-900">Word Lookup</h2>
+                                <p class="text-gray-600 text-sm hidden sm:block">Search for English words and get Burmese translations</p>
+                            </div>
+                        </div>
+
+                        <form method="POST" class="space-y-4 sm:space-y-6">
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <svg class="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                    </svg>
+                                </div>
+                                <input 
+                                    type="text" 
+                                    name="word"
+                                    value="{{ request.form.word if request.form.word else '' }}"
+                                    placeholder="Type any English word (e.g., hello, beautiful, learn...)" 
+                                    class="w-full pl-10 sm:pl-12 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-base shadow-sm"
+                                    required
+                                >
+                            </div>
+                            
+                            <button 
+                                type="submit"
+                                class="w-full px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl hover:from-indigo-700 hover:to-purple-700 transition font-semibold text-base shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200"
+                            >
+                                <span class="flex items-center justify-center" style="color: black;">
+                                    <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                                    </svg>
+                                    Search Translation
+                                </span>
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Result Area -->
+                    {% if result %}
+                    <div class="grid grid-cols-1 xl:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 mb-6 sm:mb-8 lg:mb-12">
+                        <!-- Left Column - Word Details -->
+                        <div class="space-y-4 sm:space-y-6">
+                            <!-- Word Card -->
+                            <div class="bg-white rounded-2xl shadow-lg border border-gray-200 p-4 sm:p-6">
+                                <div class="text-center">
+                                    <div class="flex flex-col items-center justify-center mb-4 space-y-2">
+                                        <h2 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900">{{ result.word }}</h2>
+                                        <span class="inline-block px-3 py-1 
+                                            {% if result.part_of_speech == 'noun' %}bg-blue-100 text-blue-800 border border-blue-200
+                                            {% elif result.part_of_speech == 'verb' %}bg-green-100 text-green-800 border border-green-200
+                                            {% elif result.part_of_speech == 'adjective' %}bg-purple-100 text-purple-800 border border-purple-200
+                                            {% elif result.part_of_speech == 'adverb' %}bg-yellow-100 text-yellow-800 border border-yellow-200
+                                            {% else %}bg-gray-100 text-gray-800 border border-gray-200{% endif %} 
+                                            rounded-full text-xs sm:text-sm font-semibold">
+                                            {{ result.part_of_speech }}
+                                        </span>
+                                    </div>
+                                    
+                                    <!-- Burmese Translation -->
+                                    <div class="mt-4 sm:mt-6">
+                                        <h3 class="text-base sm:text-lg font-semibold text-gray-700 mb-2 sm:mb-3">Burmese Translation</h3>
+                                        <div class="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-xl p-3 sm:p-4 lg:p-5 shadow-sm">
+                                            <p class="text-xl sm:text-2xl lg:text-3xl font-bold text-center text-gray-900 font-burmese">{{ result.burmese }}</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Definition -->
+                                    <div class="mt-4 sm:mt-6">
+                                        <h3 class="text-base sm:text-lg font-semibold text-gray-700 mb-2 sm:mb-3">Definition</h3>
+                                        <div class="bg-blue-50 border border-blue-200 rounded-xl p-3 sm:p-4 lg:p-5">
+                                            <p class="text-gray-700 text-sm sm:text-base lg:text-lg text-center leading-relaxed mb-2 sm:mb-3">{{ result.definition.english }}</p>
+                                            <div class="border-t border-blue-200 pt-2 sm:pt-3 mt-2 sm:mt-3">
+                                                <div class="flex flex-col sm:flex-row sm:items-center justify-center space-y-1 sm:space-y-0">
+                                                    <span class="text-xs sm:text-sm font-medium text-blue-700 sm:mr-2"></span>
+                                                    <p class="text-gray-700 text-xs sm:text-sm font-burmese text-center">{{ result.definition.burmese }}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Quick Actions -->
+                            <div class="bg-white rounded-2xl shadow-lg border border-gray-200 p-4 sm:p-6">
+                                <h3 class="text-base sm:text-lg font-semibold text-gray-800 mb-3 sm:mb-4">Try More Words</h3>
+                                <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                                    {% for sample_word in ['hello', 'beautiful', 'learn', 'book', 'water', 'thank you'] %}
+                                    <form method="POST" class="inline">
+                                        <input type="hidden" name="word" value="{{ sample_word }}">
+                                        <button type="submit" class="w-full px-2 py-2 bg-gray-50 text-gray-700 rounded-lg hover:bg-indigo-50 hover:text-indigo-700 transition text-xs sm:text-sm font-medium border border-gray-200 hover:border-indigo-300 break-words">
+                                            {{ sample_word }}
+                                        </button>
+                                    </form>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right Column - Examples -->
+                        <div class="bg-white rounded-2xl shadow-lg border border-gray-200 p-4 sm:p-6">
+                            <div class="flex items-center mb-4 sm:mb-6">
+                                <div class="bg-indigo-100 p-2 rounded-lg mr-3">
+                                    <svg class="h-4 w-4 sm:h-5 sm:w-5 lg:h-6 lg:w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                    </svg>
+                                </div>
+                                <h3 class="text-lg sm:text-xl font-bold text-gray-900">Example Sentences</h3>
+                            </div>
+                            
+                            <div class="space-y-3 sm:space-y-4">
+                                {% for example in result.examples %}
+                                <div class="group bg-gradient-to-r from-gray-50 to-white border border-gray-200 rounded-xl p-3 sm:p-4 lg:p-5 hover:border-indigo-300 transition-all duration-300 hover:shadow-md">
+                                    <div class="flex items-start">
+                                        <div class="flex-shrink-0">
+                                            <span class="inline-flex items-center justify-center w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8 bg-indigo-100 text-indigo-600 rounded-full text-xs sm:text-sm font-semibold mr-2 sm:mr-3 lg:mr-4">
+                                                {{ loop.index }}
+                                            </span>
+                                        </div>
+                                        <div class="flex-1 min-w-0">
+                                            <!-- English Sentence -->
+                                            <p class="text-gray-800 text-sm sm:text-base lg:text-lg leading-relaxed mb-2 sm:mb-3 break-words">{{ example.english }}</p>
+                                            
+                                            <!-- Burmese Translation -->
+                                            <div class="bg-amber-50 border border-amber-200 rounded-lg p-2 sm:p-3">
+                                                <div class="flex items-start">
+                                                    <span class="text-xs font-medium text-amber-700 mr-2 mt-0.5 flex-shrink-0"></span>
+                                                    <p class="text-gray-700 text-xs sm:text-sm font-burmese flex-1 break-words">{{ example.burmese_translation }}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+
+                            <!-- Usage Tips -->
+                            <div class="mt-4 sm:mt-6 lg:mt-8 bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-xl p-3 sm:p-4 lg:p-5">
+                                <div class="flex items-start">
+                                    <svg class="h-4 w-4 sm:h-5 sm:w-5 lg:h-6 lg:w-6 text-green-600 mr-2 sm:mr-3 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                    </svg>
+                                    <div class="min-w-0 flex-1">
+                                        <h4 class="font-semibold text-green-800 mb-1 text-sm sm:text-base">Language Tip</h4>
+                                        <p class="text-green-700 text-xs sm:text-sm break-words">These examples show natural usage of "{{ result.word }}" in context. Practice them to improve your Burmese fluency!</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Myanmar:wght@400;700&display=swap');
+.font-burmese {
+    font-family: 'Noto Sans Myanmar', sans-serif;
+}
+
+.break-words {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+}
+
+#mobileMenu {
+    transition: opacity 0.3s ease-in-out;
+}
+
+.container {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+</style>
+
+<script>
+// Mobile menu functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileMenuButton = document.getElementById('mobileMenuButton');
+    const closeMobileMenu = document.getElementById('closeMobileMenu');
+    const mobileMenu = document.getElementById('mobileMenu');
+    
+    if (mobileMenuButton) {
+        mobileMenuButton.addEventListener('click', function() {
+            mobileMenu.classList.remove('hidden');
+        });
+    }
+    
+    if (closeMobileMenu) {
+        closeMobileMenu.addEventListener('click', function() {
+            mobileMenu.classList.add('hidden');
+        });
+    }
+    
+    if (mobileMenu) {
+        mobileMenu.addEventListener('click', function(e) {
+            if (e.target === mobileMenu) {
+                mobileMenu.classList.add('hidden');
+            }
+        });
+    }
+});
+</script>
+{% endblock %}

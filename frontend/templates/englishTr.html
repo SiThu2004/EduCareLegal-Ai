@@ -1,0 +1,651 @@
+{% extends "index.html" %}
+
+{% block title %}English Teacher Chat{% endblock %}
+
+{% block content %}
+<!-- Right Sidebar for settings -->
+<div class="right-sidebar" id="rightSidebar">
+   <div class="p-6">
+      <div class="flex justify-between items-center mb-6">
+         <h2 class="text-xl font-bold">Character Settings</h2>
+         <button id="closeRightSidebar" class="text-gray-500 hover:text-gray-700">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+               stroke="currentColor">
+               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+         </button>
+      </div>
+
+      <div class="space-y-6">
+         <!-- Character Info -->
+         <div class="flex items-center space-x-4">
+            <img src="/image/english.jpg" alt="English Teacher" class="w-16 h-16 rounded-full">
+            <div>
+               <h3 class="font-semibold">English Tutor</h3>
+               <p class="text-sm text-gray-500">Native English Speaker</p>
+            </div>
+         </div>
+
+         <!-- Settings Sections -->
+         <div class="space-y-4">
+            <div>
+               <h4 class="font-medium mb-2">Voice</h4>
+               <select id="voiceSelect" class="w-full p-2 border border-gray-300 rounded">
+                  <option value="default">Jenny</option>
+                  <option value="female2">Aria</option>
+                  
+                  <option value="female5">Michelle</option>
+
+               </select>
+            </div>
+         </div>
+
+         <div>
+            <h4 class="font-medium mb-2">Speaking Speed</h4>
+            <select id="speedSelect" class="w-full p-2 border border-gray-300 rounded">
+               <option value="slow">Slow</option>
+               <option value="normal" selected>Normal</option>
+               <option value="fast">Fast</option>
+            </select>
+         </div>
+
+         <div>
+            <h4 class="font-medium mb-2">Interaction History</h4>
+            <div class="bg-gray-100 p-3 rounded">
+               <p class="text-sm" id="historyCount">Loading...</p>
+            </div>
+         </div>
+
+         <div>
+            <!-- <h4 class="font-medium mb-2">Pinned Messages</h4>
+            <div class="bg-gray-100 p-3 rounded">
+               <p class="text-sm">No pinned messages</p> 
+            </div> -->
+         </div>
+      </div>
+
+      <button id="saveSettingsBtn" class="w-full py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition">
+         Save Settings
+      </button>
+   </div>
+</div>
+
+<!-- Overlay -->
+<div class="overlay fixed inset-0 bg-black bg-opacity-40 hidden z-40" id="overlay"></div>
+
+<!-- Main Content -->
+<main class="ml-64 md:ml-64 bg-white min-h-screen p-4 sm:p-6 transition-all duration-300">
+   <!-- Header -->
+   <header
+      class="sticky top-0 z-40 flex flex-wrap items-center justify-between gap-3 mb-4 border-b border-gray-300 pb-3 bg-white px-2 sm:px-4">
+      <div class="flex items-center space-x-3">
+         <img src="/image/english.jpg" alt="Avatar" class="w-8 h-8 rounded-full border border-gray-300">
+         <h1 class="text-lg sm:text-xl font-semibold">English Tutor</h1>
+      </div>
+      <div class="flex items-center space-x-2 sm:space-x-3">
+         <a href="/vocabulary">
+            <button
+               class="p-2 rounded-full border border-gray-400 hover:bg-gray-100 hover:border-purple-500 transition">
+               <svg class="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                     d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+               </svg>
+            </button>
+         </a>
+
+         <a href="/englishcall">
+            <button class="p-2 rounded-full border border-gray-400 hover:bg-gray-100 hover:border-green-500 transition">
+               <svg class="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                     d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.17 12.17 0 00.7 2.81 2 2 0 01-.45 2.11L8 10a16 16 0 006 6l1.36-1.36a2 2 0 012.11-.45 12.17 12.17 0 002.81.7A2 2 0 0122 16.92z" />
+               </svg>
+            </button>
+         </a>
+
+         <button id="openRightSidebar"
+            class="p-2 rounded-full border border-gray-400 hover:bg-gray-100 hover:border-red-500 transition">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+               <circle cx="5" cy="12" r="2" />
+               <circle cx="12" cy="12" r="2" />
+               <circle cx="19" cy="12" r="2" />
+            </svg>
+         </button>
+      </div>
+   </header>
+
+   <!-- Main Chat Section -->
+   <div class="flex flex-col items-center">
+      <img src="/image/english.jpg" alt="Profile" class="w-20 h-20 rounded-full shadow mb-4">
+      <h2 class="text-2xl font-semibold mb-1 text-center">English Tutor</h2>
+
+      <!-- Chat Box -->
+      <div id="chatBox"
+         class="w-full max-w-lg space-y-4 mt-6 overflow-y-auto no-scrollbar  border-gray-200 rounded-2xl p-3"
+         style="height: 60vh;">
+         <!-- Default message -->
+         <div class="bg-gray-100 rounded-2xl p-4 shadow flex items-start space-x-3">
+            <img src="/image/english.jpg" alt="Avatar" class="w-10 h-10 rounded-full">
+            <div>
+               <p class="font-semibold text-sm mb-1">English Tutor</p>
+               <p class="text-sm text-gray-800">I am Tom, I am a native American. You can speak with me about
+                  everything. I will talk with you and at the same time correct your grammatical errors.</p>
+            </div>
+         </div>
+      </div>
+
+      <!-- Message Input -->
+      <div class="sticky bottom-0 w-full max-w-lg mt-4 bg-white">
+         <div class="flex items-center rounded-full border border-gray-300 shadow p-2 bg-white">
+            <input id="userInput" type="text" placeholder="Message English Teacher…"
+               class="flex-grow px-4 py-2 rounded-full focus:outline-none text-sm bg-white text-gray-800" />
+               
+            <button id="micBtn" class="p-2 hover:bg-gray-200 rounded-full mr-1 transition-all duration-300">
+               <svg class="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                     d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+               </svg>
+            </button>
+
+            <button onclick="sendMessage()" class="p-2 hover:bg-gray-200 rounded-full">
+               <svg class="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M22 2L11 13" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                     d="M22 2L15 22L11 13L2 9L22 2Z" />
+               </svg>
+            </button>
+         </div>
+      </div>
+   </div>
+</main>
+
+<!-- Scripts -->
+<script>
+   // Global variable to track if chat history is loaded
+let chatHistoryLoaded = false;
+
+// Speech recognition variables
+let recognition;
+let isListening = false;
+
+// Initialize speech recognition
+function initSpeechRecognition() {
+    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        recognition = new SpeechRecognition();
+        
+        recognition.continuous = false;
+        recognition.interimResults = true;
+        recognition.lang = 'en-US';
+        
+        recognition.onstart = function() {
+            console.log("Speech recognition started");
+            isListening = true;
+            updateMicButton(true);
+        };
+        
+        recognition.onresult = function(event) {
+            let interimTranscript = '';
+            let finalTranscript = '';
+            
+            for (let i = event.resultIndex; i < event.results.length; i++) {
+                const transcript = event.results[i][0].transcript;
+                if (event.results[i].isFinal) {
+                    finalTranscript += transcript;
+                } else {
+                    interimTranscript += transcript;
+                }
+            }
+            
+            const userInput = document.getElementById('userInput');
+            
+            if (finalTranscript) {
+                userInput.value = finalTranscript;
+                stopListening();
+            } else if (interimTranscript) {
+                userInput.value = interimTranscript;
+            }
+        };
+        
+        recognition.onerror = function(event) {
+            console.error('Speech recognition error:', event.error);
+            isListening = false;
+            updateMicButton(false);
+            
+            if (event.error === 'not-allowed') {
+                alert('Microphone access denied. Please allow microphone permissions in your browser settings.');
+            }
+        };
+        
+        recognition.onend = function() {
+            console.log("Speech recognition ended");
+            isListening = false;
+            updateMicButton(false);
+        };
+    } else {
+        console.log("Speech recognition not supported in this browser");
+        document.getElementById('micBtn').style.display = 'none';
+    }
+}
+
+// Toggle microphone listening
+function toggleListening() {
+    if (!recognition) {
+        initSpeechRecognition();
+    }
+    
+    if (isListening) {
+        stopListening();
+    } else {
+        startListening();
+    }
+}
+
+// Start listening
+function startListening() {
+    try {
+        recognition.start();
+        console.log("Starting speech recognition...");
+    } catch (error) {
+        console.error("Error starting speech recognition:", error);
+        isListening = false;
+        updateMicButton(false);
+    }
+}
+
+// Stop listening
+function stopListening() {
+    if (recognition && isListening) {
+        recognition.stop();
+        isListening = false;
+        updateMicButton(false);
+    }
+}
+
+// Update microphone button appearance
+function updateMicButton(listening) {
+    const micBtn = document.getElementById('micBtn');
+    const micSvg = micBtn.querySelector('svg');
+    
+    if (listening) {
+        micBtn.classList.add('bg-red-100', 'border-red-500');
+        micBtn.classList.remove('hover:bg-gray-200');
+        micSvg.classList.add('text-red-600');
+        micSvg.classList.remove('text-gray-600');
+    } else {
+        micBtn.classList.remove('bg-red-100', 'border-red-500');
+        micBtn.classList.add('hover:bg-gray-200');
+        micSvg.classList.remove('text-red-600');
+        micSvg.classList.add('text-gray-600');
+    }
+}
+
+// Load chat history when page loads
+document.addEventListener('DOMContentLoaded', function () {
+    console.log("Page loaded, loading chat history...");
+    loadChatHistory();
+    
+    // Initialize speech recognition
+    initSpeechRecognition();
+
+    // Setup enter key for sending message
+    document.getElementById('userInput').addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') {
+            sendMessage();
+        }
+    });
+    
+    // Add click event listener to mic button
+    document.getElementById('micBtn').addEventListener('click', toggleListening);
+    
+    // Add click event listener to send button
+    document.getElementById('sendBtn').addEventListener('click', sendMessage);
+});
+
+// Function to load chat history from server
+async function loadChatHistory() {
+    try {
+        console.log("Loading chat history from API...");
+        const response = await fetch('/english/chat-history-api');
+
+        if (response.ok) {
+            const data = await response.json();
+            console.log("Chat history loaded:", data.chats?.length || 0, "messages");
+
+            if (data.chats && data.chats.length > 0) {
+                displayChatHistory(data.chats);
+                updateHistoryCount(data.chats.length);
+            } else {
+                console.log("No previous chat history found");
+                updateHistoryCount(0);
+            }
+            chatHistoryLoaded = true;
+        } else {
+            console.error("Failed to load chat history:", response.status);
+        }
+    } catch (error) {
+        console.error("Error loading chat history:", error);
+    }
+}
+
+// Function to display chat history in the chat box
+function displayChatHistory(chats) {
+    const chatBox = document.getElementById('chatBox');
+
+    // Clear only the default message if we have actual chats
+    if (chats.length > 0) {
+        // Keep only the default message, remove any duplicate messages
+        const defaultMessage = chatBox.querySelector('.bg-gray-100');
+        chatBox.innerHTML = '';
+        if (defaultMessage) {
+            chatBox.appendChild(defaultMessage);
+        }
+    }
+
+    // Add all chat messages
+    chats.forEach(chat => {
+        if (chat.user_message && chat.bot_reply) {
+            addUserMessageToChat(chat.user_message, false);
+            addTeacherMessageToChat(chat.bot_reply, false);
+        }
+    });
+
+    scrollToBottom();
+    console.log("Chat history displayed:", chats.length, "messages");
+}
+
+// Function to update history count in sidebar
+function updateHistoryCount(count) {
+    const historyElement = document.getElementById('historyCount');
+    if (historyElement) {
+        historyElement.textContent = `${count} messages in history`;
+    }
+}
+
+// Scroll to bottom of chat
+function scrollToBottom() {
+    const chatBox = document.getElementById('chatBox');
+    chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+// Toggle right sidebar
+document.getElementById('openRightSidebar').addEventListener('click', function () {
+    document.getElementById('rightSidebar').classList.add('open');
+    document.getElementById('overlay').classList.add('active');
+
+    // Load saved settings when sidebar opens
+    const savedSettings = JSON.parse(localStorage.getItem('voiceSettings')) || {
+        voice: 'default',
+        speed: 'normal'
+    };
+    document.getElementById('voiceSelect').value = savedSettings.voice;
+    document.getElementById('speedSelect').value = savedSettings.speed;
+
+    // Update history count in sidebar
+    if (chatHistoryLoaded) {
+        const chatBox = document.getElementById('chatBox');
+        const userMessages = chatBox.querySelectorAll('.bg-blue-100');
+        updateHistoryCount(userMessages.length);
+    }
+});
+
+document.getElementById('closeRightSidebar').addEventListener('click', function () {
+    document.getElementById('rightSidebar').classList.remove('open');
+    document.getElementById('overlay').classList.remove('active');
+});
+
+document.getElementById('overlay').addEventListener('click', function () {
+    document.getElementById('rightSidebar').classList.remove('open');
+    this.classList.remove('active');
+});
+
+// Save settings button
+document.getElementById('saveSettingsBtn').addEventListener('click', function () {
+    const voiceType = document.getElementById('voiceSelect').value;
+    const speed = document.getElementById('speedSelect').value;
+
+    // Save to localStorage
+    localStorage.setItem('voiceSettings', JSON.stringify({
+        voice: voiceType,
+        speed: speed
+    }));
+
+    alert('Settings saved successfully!');
+    document.getElementById('rightSidebar').classList.remove('open');
+    document.getElementById('overlay').classList.remove('active');
+});
+
+async function sendMessage() {
+    const input = document.getElementById('userInput');
+    const message = input.value.trim();
+    
+    // If no message but we were listening, wait a moment
+    if (!message && isListening) {
+        setTimeout(() => {
+            sendMessage();
+        }, 500);
+        return;
+    }
+    
+    if (!message) return;
+
+    // Stop listening if active
+    if (isListening) {
+        stopListening();
+    }
+
+    // Clear input immediately
+    input.value = '';
+
+    console.log("Sending message:", message);
+    addUserMessageToChat(message);
+
+    // Add typing indicator
+    const typingId = 'typing-' + Date.now();
+    addTeacherTypingIndicator(typingId);
+
+    try {
+        console.log("Making fetch request to /chat");
+
+        const response = await fetch('/chat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message: message })
+        });
+
+        console.log("Response status:", response.status);
+
+        // Remove typing indicator
+        removeTypingIndicator(typingId);
+
+        if (response.ok) {
+            const data = await response.json();
+            console.log("Bot reply received:", data.reply);
+            addTeacherMessageToChat(data.reply);
+
+            // Update history count after new message
+            if (chatHistoryLoaded) {
+                const chatBox = document.getElementById('chatBox');
+                const userMessages = chatBox.querySelectorAll('.bg-blue-100');
+                updateHistoryCount(userMessages.length);
+            }
+        } else if (response.status === 401) {
+            console.log("Unauthorized - user not logged in");
+            addTeacherMessageToChat("Please login first.");
+        } else {
+            const errorText = await response.text();
+            console.error("Server error:", errorText);
+            addTeacherMessageToChat("Something went wrong. Please try again.");
+        }
+    } catch (error) {
+        removeTypingIndicator(typingId);
+        console.error('Network error:', error);
+        addTeacherMessageToChat("Connection error. Please check your internet.");
+    }
+}
+
+function addUserMessageToChat(message, scroll = true) {
+    const chatBox = document.getElementById('chatBox');
+    const userMsg = `
+        <div class="flex justify-end mb-2">
+            <div class="flex flex-col items-end space-y-1 max-w-xs">
+                <div class="bg-blue-100 text-gray-800 rounded-2xl p-3 shadow">
+                    <p class="text-sm">${message}</p>
+                </div>
+                <span class="text-xs text-gray-500">${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+            </div>
+        </div>
+    `;
+    chatBox.insertAdjacentHTML('beforeend', userMsg);
+    if (scroll) {
+        scrollToBottom();
+    }
+}
+
+function addTeacherTypingIndicator(id) {
+    const chatBox = document.getElementById('chatBox');
+    const typingMsg = `
+        <div id="${id}" class="flex items-start space-x-3">
+            <img src="/image/english.jpg" alt="Avatar" class="w-8 h-8 rounded-full" />
+            <div class="bg-gray-100 rounded-2xl p-3 shadow max-w-xs">
+                <p class="font-semibold text-sm mb-1">English Tutor</p>
+                <p class="text-sm text-gray-500 italic">Typing...</p>
+            </div>
+        </div>
+    `;
+    chatBox.insertAdjacentHTML('beforeend', typingMsg);
+    scrollToBottom();
+}
+
+function removeTypingIndicator(id) {
+    const typingElement = document.getElementById(id);
+    if (typingElement) {
+        typingElement.remove();
+    }
+}
+
+function addTeacherMessageToChat(message, scroll = true) {
+    const chatBox = document.getElementById('chatBox');
+    const teacherMsg = `
+        <div class="flex items-start space-x-3">
+            <img src="/image/english.jpg" alt="Avatar" class="w-8 h-8 rounded-full" />
+            <div class="bg-gray-100 rounded-2xl p-3 shadow max-w-xs">
+                <p class="font-semibold text-sm mb-1">English Tutor</p>
+                <p class="text-sm text-gray-800">${message}</p>
+                <span class="text-xs text-gray-500 mt-2 block">${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+            </div>
+        </div>
+    `;
+    chatBox.insertAdjacentHTML('beforeend', teacherMsg);
+    if (scroll) {
+        scrollToBottom();
+    }
+}
+
+// Clean up audio files when page loads or refreshes
+window.addEventListener('load', async function () {
+    try {
+        const response = await fetch('/english/clean-audio', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' }
+        });
+
+        if (!response.ok) {
+            console.error('Failed to clean audio files');
+        }
+    } catch (error) {
+        console.error('Error cleaning audio files:', error);
+    }
+});
+</script>
+
+<!-- CSS Styles - Hide Scroll Bar -->
+<style>
+   @media (max-width: 768px) {
+      main {
+         margin-left: 0 !important;
+         padding: 1rem !important;
+      }
+
+      .right-sidebar {
+         width: 100%;
+      }
+
+      .w-80 {
+         width: 100% !important;
+      }
+
+      header h1 {
+         font-size: 1rem;
+      }
+
+      #chatBox {
+         height: 55vh;
+      }
+   }
+
+   .right-sidebar.open {
+      transform: translateX(0);
+   }
+
+   .overlay.active {
+      display: block;
+   }
+
+   /* 
+   .no-scrollbar::-webkit-scrollbar {
+      display: none;
+   } */
+
+   .no-scrollbar {
+      scrollbar-width: none;
+   }
+
+   .right-sidebar {
+      transform: translateX(100%);
+      transition: transform 0.3s ease-in-out;
+   }
+
+   .right-sidebar.open {
+      transform: translateX(0);
+   }
+
+   .overlay {
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease-in-out;
+   }
+
+   .overlay.active {
+      opacity: 1;
+      visibility: visible;
+   }
+
+   /* Chat box fixed height and scroll - Hide scroll bar */
+   #chatBox {
+      height: 60vh;
+      overflow-y: auto;
+   }
+
+   /* Hide scrollbar for Chrome, Safari and Opera */
+   .no-scrollbar::-webkit-scrollbar {
+      display: none;
+   }
+
+   /* Hide scrollbar for IE, Edge and Firefox */
+   .no-scrollbar {
+      -ms-overflow-style: none;
+      /* IE and Edge */
+      scrollbar-width: none;
+      /* Firefox */
+   }
+
+   /* Sticky message input */
+   .sticky {
+      position: sticky;
+      bottom: 24px;
+      background: white;
+      z-index: 10;
+   }
+</style>
+
+{% endblock %}

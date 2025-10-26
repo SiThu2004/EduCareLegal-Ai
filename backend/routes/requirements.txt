@@ -1,0 +1,7 @@
+flask
+torch
+git+https://github.com/openai/whisper.git
+edge-tts
+langchain
+gtts==2.5.1
+edge-tts==6.1.9

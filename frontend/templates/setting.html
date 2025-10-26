@@ -1,0 +1,1026 @@
+{% extends "index.html" %}
+
+{% block title %}Settings{% endblock %}
+
+{% block content %}
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+    body {
+        font-family: 'Inter', sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+    }
+
+    .settings-container {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 0 16px;
+    }
+
+    .settings-card {
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        margin-bottom: 24px;
+    }
+
+    .settings-header {
+        padding: 24px;
+        border-bottom: 1px solid #f1f5f9;
+        background: linear-gradient(135deg, #4f46e5, #7c3aed);
+        color: white;
+    }
+
+    .settings-grid {
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+        gap: 0;
+    }
+
+    .settings-sidebar {
+        background: #f8fafc;
+        border-right: 1px solid #e2e8f0;
+        padding: 0;
+    }
+
+    .settings-content {
+        padding: 0;
+    }
+
+    .nav-item {
+        padding: 16px 24px;
+        border-bottom: 1px solid #e2e8f0;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .nav-item:hover {
+        background: #e2e8f0;
+    }
+
+    .nav-item.active {
+        background: white;
+        border-right: 3px solid #4f46e5;
+        font-weight: 600;
+        color: #4f46e5;
+    }
+
+    .content-section {
+        padding: 32px;
+        display: none;
+    }
+
+    .content-section.active {
+        display: block;
+        animation: fadeIn 0.5s ease;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .form-group {
+        margin-bottom: 24px;
+    }
+
+    .form-label {
+        display: block;
+        font-weight: 600;
+        color: #374151;
+        margin-bottom: 8px;
+    }
+
+    .form-input {
+        width: 100%;
+        padding: 12px 16px;
+        border: 2px solid #e5e7eb;
+        border-radius: 8px;
+        font-size: 14px;
+        transition: all 0.3s ease;
+    }
+
+    .form-input:focus {
+        outline: none;
+        border-color: #4f46e5;
+        box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+    }
+
+    .btn {
+        padding: 12px 24px;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .btn-primary {
+        background: #4f46e5;
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background: #4338ca;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+    }
+
+    .btn-outline {
+        background: white;
+        color: #374151;
+        border: 2px solid #e5e7eb;
+    }
+
+    .btn-outline:hover {
+        border-color: #4f46e5;
+        color: #4f46e5;
+    }
+
+    .btn-danger {
+        background: #ef4444;
+        color: white;
+    }
+
+    .btn-danger:hover {
+        background: #dc2626;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+    }
+
+    .profile-avatar {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #4f46e5, #7c3aed);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 36px;
+        font-weight: 600;
+        margin: 0 auto 20px;
+        border: 4px solid white;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .toggle-switch {
+        position: relative;
+        display: inline-block;
+        width: 52px;
+        height: 28px;
+    }
+
+    .toggle-switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    .toggle-slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #cbd5e1;
+        transition: .4s;
+        border-radius: 34px;
+    }
+
+    .toggle-slider:before {
+        position: absolute;
+        content: "";
+        height: 20px;
+        width: 20px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        transition: .4s;
+        border-radius: 50%;
+    }
+
+    input:checked+.toggle-slider {
+        background-color: #10b981;
+    }
+
+    input:checked+.toggle-slider:before {
+        transform: translateX(24px);
+    }
+
+    .stat-card {
+        background: white;
+        border-radius: 12px;
+        padding: 20px;
+        border: 1px solid #e5e7eb;
+        text-align: center;
+    }
+
+    .stat-number {
+        font-size: 32px;
+        font-weight: 700;
+        color: #4f46e5;
+        margin-bottom: 8px;
+    }
+
+    .stat-label {
+        color: #6b7280;
+        font-size: 14px;
+    }
+
+    .back-btn {
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 20px;
+    }
+
+    .back-btn:hover {
+        background: rgba(255, 255, 255, 0.3);
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 16px;
+        margin-bottom: 24px;
+    }
+
+    .alert {
+        padding: 12px 16px;
+        border-radius: 8px;
+        margin-bottom: 16px;
+        display: none;
+    }
+
+    .alert-success {
+        background: #d1fae5;
+        color: #065f46;
+        border: 1px solid #a7f3d0;
+    }
+
+    .alert-error {
+        background: #fee2e2;
+        color: #991b1b;
+        border: 1px solid #fecaca;
+    }
+
+    .password-input-group {
+        position: relative;
+    }
+
+    .password-toggle {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: #6b7280;
+    }
+
+    .delete-confirm {
+        background: #fef2f2;
+        border: 1px solid #fecaca;
+        border-radius: 8px;
+        padding: 16px;
+        margin-top: 16px;
+    }
+
+    .delete-input {
+        width: 100%;
+        padding: 8px 12px;
+        border: 1px solid #e5e7eb;
+        border-radius: 4px;
+        margin-top: 8px;
+    }
+
+    .password-strength {
+        margin-top: 8px;
+    }
+
+    .strength-bar {
+        width: 100%;
+        height: 6px;
+        background: #e5e7eb;
+        border-radius: 3px;
+        overflow: hidden;
+    }
+
+    .strength-fill {
+        height: 100%;
+        width: 0%;
+        transition: all 0.3s ease;
+        border-radius: 3px;
+    }
+
+    .strength-weak {
+        background: #ef4444;
+        width: 25%;
+    }
+
+    .strength-fair {
+        background: #f59e0b;
+        width: 50%;
+    }
+
+    .strength-good {
+        background: #3b82f6;
+        width: 75%;
+    }
+
+    .strength-strong {
+        background: #10b981;
+        width: 100%;
+    }
+
+    /* Mobile Responsive Styles */
+    @media (max-width: 768px) {
+        .settings-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .settings-sidebar {
+            display: flex;
+            overflow-x: auto;
+            border-right: none;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 0;
+        }
+
+        .nav-item {
+            flex: 0 0 auto;
+            border-bottom: none;
+            border-right: 1px solid #e2e8f0;
+            min-width: 120px;
+            white-space: nowrap;
+            justify-content: center;
+            padding: 12px 16px;
+        }
+
+        .nav-item.active {
+            border-right: none;
+            border-bottom: 3px solid #4f46e5;
+        }
+
+        .content-section {
+            padding: 20px;
+        }
+
+        .settings-header {
+            padding: 0px;
+        }
+
+        .settings-header h1 {
+            font-size: 24px;
+        }
+
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            font-size: 28px;
+        }
+
+        .stats-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .stat-number {
+            font-size: 24px;
+        }
+
+        .btn {
+            width: 100%;
+            justify-content: center;
+            padding: 14px 20px;
+        }
+
+        .form-group .flex {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .toggle-switch {
+            align-self: flex-start;
+        }
+
+        .back-btn {
+            margin-top: 60px;
+            /* Account for mobile menu button */
+        }
+    }
+
+    @media (max-width: 480px) {
+        .settings-container {
+            padding: 0 12px;
+        }
+
+        .settings-card {
+            border-radius: 12px;
+        }
+
+        .content-section {
+            padding: 16px;
+        }
+
+        .stats-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .profile-avatar {
+            width: 70px;
+            height: 70px;
+            font-size: 24px;
+        }
+
+        .form-input {
+            padding: 10px 14px;
+        }
+    }
+</style>
+
+<div class="ml-64 min-h-screen bg-white p-6">
+    <!-- Settings Header -->
+    <div class="settings-card">
+        <div class="settings-header">
+            <h1 class="text-3xl font-bold mb-2">Settings</h1>
+            <p class="text-blue-100">Manage your account preferences and security settings</p>
+        </div>
+
+        <!-- Settings Content -->
+        <div class="settings-grid">
+            <!-- Navigation Sidebar -->
+            <div class="settings-sidebar">
+                <div class="nav-item active" data-target="profile">
+                    <i class="fas fa-user-circle text-lg"></i>
+                    <span class="hidden md:inline">Profile</span>
+                    <span class="md:hidden">Profile</span>
+                </div>
+                <div class="nav-item" data-target="data">
+                    <i class="fas fa-database text-lg"></i>
+                    <span class="hidden md:inline">Data & Privacy</span>
+                    <span class="md:hidden">Data</span>
+                </div>
+
+                <div class="nav-item" data-target="security">
+                    <i class="fas fa-lock text-lg"></i>
+                    <span class="hidden md:inline">Security</span>
+                    <span class="md:hidden">Security</span>
+                </div>
+
+            </div>
+
+            <!-- Content Area -->
+            <div class="settings-content">
+                <!-- Alerts -->
+                <div id="alertSuccess" class="alert alert-success" style="display: none;"></div>
+                <div id="alertError" class="alert alert-error" style="display: none;"></div>
+
+                <!-- Profile Section -->
+                <div class="content-section active" id="profile">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6">Profile Settings</h2>
+
+                    <div class="text-center mb-8">
+                        <div class="profile-avatar" id="userAvatar">U</div>
+                        <h3 class="text-xl font-semibold text-gray-900" id="userDisplayName">User</h3>
+                        <p class="text-gray-600" id="userEmail">Loading...</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">User Name</label>
+                        <input type="text" class="form-input" id="displayName" placeholder="Enter your display name">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Email Address</label>
+                        <input type="email" class="form-input" id="userEmailInput" readonly>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Phone Number</label>
+                        <input type="tel" class="form-input" id="phoneNumber" placeholder="Add phone number">
+                    </div>
+
+                    <button class="btn btn-primary" onclick="updateProfile()">
+                        <i class="fas fa-save"></i>
+                        Save Changes
+                    </button>
+                </div>
+
+                <!-- Data & Privacy Section -->
+                <div class="content-section" id="data">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6">Data & Privacy</h2>
+
+                    <div class="stats-grid" id="dataStats">
+                        <div class="stat-card">
+                            <div class="stat-number">...</div>
+                            <div class="stat-label">Storage Used</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">...</div>
+                            <div class="stat-label">Total Chats</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">...</div>
+                            <div class="stat-label">Account Age</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Data Export</label>
+                        <p class="text-gray-600 mb-4">Download all your data in a portable format</p>
+                        <button class="btn btn-outline" onclick="exportData()">
+                            <i class="fas fa-download"></i>
+                            Export My Data
+                        </button>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Clear Chat History</label>
+                        <p class="text-gray-600 mb-4">Permanently delete all your conversation history</p>
+                        <button class="btn btn-outline" onclick="clearChatHistory()">
+                            <i class="fas fa-trash"></i>
+                            Clear All Chats
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Security Section -->
+                <div class="content-section" id="security">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6">Security Settings</h2>
+
+                    <div class="form-group">
+                        <label class="form-label">Change Password</label>
+                        <div class="password-input-group">
+                            <input type="password" class="form-input" id="currentPassword"
+                                placeholder="Current password">
+                            <button type="button" class="password-toggle" onclick="togglePassword('currentPassword')">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                        <div class="password-input-group mt-2">
+                            <input type="password" class="form-input" id="newPassword" placeholder="New password"
+                                onkeyup="checkPasswordStrength()">
+                            <button type="button" class="password-toggle" onclick="togglePassword('newPassword')">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                        <div class="password-strength mt-2" id="passwordStrength" style="display: none;">
+                            <div class="strength-bar">
+                                <div class="strength-fill" id="strengthFill"></div>
+                            </div>
+                            <div class="strength-text text-sm mt-1" id="strengthText"></div>
+                        </div>
+                        <button class="btn btn-outline mt-2" onclick="changePassword()">
+                            <i class="fas fa-key"></i>
+                            Change Password
+                        </button>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Delete Account</label>
+                        <p class="text-gray-600 mb-4">Permanently delete your account and all data</p>
+                        <div class="delete-confirm" id="deleteConfirm" style="display: none;">
+                            <p class="text-red-600 font-semibold">Warning: This action cannot be undone!</p>
+                            <p class="text-gray-600 text-sm mt-2">Type "DELETE MY ACCOUNT" to confirm:</p>
+                            <input type="text" class="delete-input" id="deleteConfirmation"
+                                placeholder="DELETE MY ACCOUNT">
+                            <button class="btn btn-danger mt-3" onclick="deleteAccount()">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                Confirm Account Deletion
+                            </button>
+                        </div><br><br>
+                        <button class="btn btn-danger" onclick="showDeleteConfirmation()">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            Delete Account
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Navigation between settings sections
+    document.addEventListener('DOMContentLoaded', function () {
+        const navItems = document.querySelectorAll('.nav-item');
+        const contentSections = document.querySelectorAll('.content-section');
+
+        navItems.forEach(item => {
+            item.addEventListener('click', function () {
+                // Remove active class from all items
+                navItems.forEach(nav => nav.classList.remove('active'));
+                // Add active class to clicked item
+                this.classList.add('active');
+
+                // Hide all content sections
+                contentSections.forEach(section => section.classList.remove('active'));
+
+                // Show target section
+                const targetId = this.getAttribute('data-target');
+                document.getElementById(targetId).classList.add('active');
+            });
+        });
+
+        // Load user data
+        loadUserData();
+        loadUserStats();
+    });
+
+    // Alert functions
+    function showAlert(message, type = 'success') {
+        const alertDiv = type === 'success' ? document.getElementById('alertSuccess') : document.getElementById('alertError');
+        alertDiv.textContent = message;
+        alertDiv.style.display = 'block';
+
+        setTimeout(() => {
+            alertDiv.style.display = 'none';
+        }, 5000);
+    }
+
+    // User data functions
+    // async function loadUserData() {
+    //     try {
+    //         // In a real app, you'd fetch this from your API
+    //         const userEmail = '{{ session.email }}' || 'user@example.com';
+    //         const displayName = '{{ user.display_name }}' || 'UserName';
+    //         const phoneNumber = '{{ user.phone_number }}' || '';
+
+    //         document.getElementById('userEmail').textContent = userEmail;
+    //         document.getElementById('userEmailInput').value = userEmail;
+    //         document.getElementById('userAvatar').textContent = displayName.charAt(0).toUpperCase();
+    //         document.getElementById('userDisplayName').textContent = displayName;
+    //         document.getElementById('displayName').value = displayName;
+    //         document.getElementById('phoneNumber').value = phoneNumber;
+
+    //     } catch (error) {
+    //         console.error('Error loading user data:', error);
+    //     }
+    // }
+    async function loadUserData() {
+        try {
+            const userEmail = '{{ session.email }}' || 'user@example.com';
+            const displayName = '{{ user.display_name }}' || userEmail.split('@')[0]; // Default to email username
+            const phoneNumber = '{{ user.phone_number }}' || '';
+
+            // Set email field (readonly)
+            document.getElementById('userEmail').textContent = userEmail;
+            document.getElementById('userEmailInput').value = userEmail;
+
+            // Set username/display name field (editable)
+            document.getElementById('userAvatar').textContent = displayName.charAt(0).toUpperCase();
+            document.getElementById('userDisplayName').textContent = displayName;
+            document.getElementById('displayName').value = displayName;
+
+            document.getElementById('phoneNumber').value = phoneNumber;
+
+        } catch (error) {
+            console.error('Error loading user data:', error);
+        }
+    }
+
+    async function loadUserStats() {
+        try {
+            const response = await fetch('/api/get-user-stats');
+            const data = await response.json();
+
+            if (data.success) {
+                const stats = data.stats;
+                const statsGrid = document.getElementById('dataStats');
+
+                statsGrid.innerHTML = `
+                        <div class="stat-card">
+                            <div class="stat-number">${stats.storage_used}</div>
+                            <div class="stat-label">Storage Used</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">${stats.total_chats}</div>
+                            <div class="stat-label">Total Chats</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">${stats.account_created}</div>
+                            <div class="stat-label">Account Created</div>
+                        </div>
+                    `;
+            }
+        } catch (error) {
+            console.error('Error loading stats:', error);
+        }
+    }
+
+    // Profile functions
+    async function updateProfile() {
+        const displayName = document.getElementById('displayName').value;
+        const phoneNumber = document.getElementById('phoneNumber').value;
+
+        try {
+            const response = await fetch('/api/update-profile', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    display_name: displayName,
+                    phone_number: phoneNumber
+                })
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                showAlert('Profile updated successfully!');
+                // Update the UI immediately without reloading the page
+                updateProfileUI(displayName);
+            } else {
+                showAlert(data.error, 'error');
+            }
+        } catch (error) {
+            showAlert('Error updating profile', 'error');
+        }
+    }
+
+    // Function to update profile UI without page reload
+    function updateProfileUI(displayName) {
+        // Update avatar with new initial
+        document.getElementById('userAvatar').textContent = displayName.charAt(0).toUpperCase();
+
+        // Update display name
+        document.getElementById('userDisplayName').textContent = displayName;
+    }
+
+    // Data export
+    async function exportData() {
+        try {
+            const response = await fetch('/api/export-data', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                // Create download link for the data
+                const blob = new Blob([JSON.stringify(data.data, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `user-data-export-${new Date().toISOString().split('T')[0]}.json`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+
+                showAlert('Data exported successfully!');
+            } else {
+                showAlert(data.error, 'error');
+            }
+        } catch (error) {
+            showAlert('Error exporting data', 'error');
+        }
+    }
+
+    // Clear chat history
+    async function clearChatHistory() {
+        if (!confirm('Are you sure you want to clear all your chat history? This action cannot be undone.')) {
+            return;
+        }
+
+        try {
+            const response = await fetch('/api/clear-chat-history', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                showAlert(`Successfully cleared ${data.deleted_count} chat messages!`);
+                loadUserStats();
+            } else {
+                showAlert(data.error, 'error');
+            }
+        } catch (error) {
+            showAlert('Error clearing chat history', 'error');
+        }
+    }
+
+    // Password validation function
+    function validatePassword(password) {
+        const minLength = 8;
+        const hasUpperCase = /[A-Z]/.test(password);
+        const hasLowerCase = /[a-z]/.test(password);
+        const hasNumbers = /\d/.test(password);
+        const hasSpecialChar = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password);
+
+        if (password.length < minLength) {
+            return `Password must be at least ${minLength} characters long`;
+        }
+
+        if (!hasUpperCase) {
+            return 'Password must contain at least one uppercase letter';
+        }
+
+        if (!hasLowerCase) {
+            return 'Password must contain at least one lowercase letter';
+        }
+
+        if (!hasNumbers) {
+            return 'Password must contain at least one number';
+        }
+
+        if (!hasSpecialChar) {
+            return 'Password must contain at least one special character';
+        }
+
+        return null; // No error
+    }
+
+    // Password change with validation
+    async function changePassword() {
+        const currentPassword = document.getElementById('currentPassword').value;
+        const newPassword = document.getElementById('newPassword').value;
+
+        if (!currentPassword || !newPassword) {
+            showAlert('Please fill in both password fields', 'error');
+            return;
+        }
+
+        // Password validation
+        const passwordError = validatePassword(newPassword);
+        if (passwordError) {
+            showAlert(passwordError, 'error');
+            return;
+        }
+
+        try {
+            const response = await fetch('/api/change-password', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    current_password: currentPassword,
+                    new_password: newPassword
+                })
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                showAlert('Password changed successfully!');
+                document.getElementById('currentPassword').value = '';
+                document.getElementById('newPassword').value = '';
+                document.getElementById('passwordStrength').style.display = 'none';
+            } else {
+                showAlert(data.error, 'error');
+            }
+        } catch (error) {
+            showAlert('Error changing password', 'error');
+        }
+    }
+
+    // Password strength indicator
+    function checkPasswordStrength() {
+        const password = document.getElementById('newPassword').value;
+        const strengthBar = document.getElementById('passwordStrength');
+        const strengthFill = document.getElementById('strengthFill');
+        const strengthText = document.getElementById('strengthText');
+
+        if (password.length === 0) {
+            strengthBar.style.display = 'none';
+            return;
+        }
+
+        strengthBar.style.display = 'block';
+
+        let strength = 0;
+        let feedback = [];
+
+        // Length check
+        if (password.length >= 8) strength += 1;
+
+        // Character type checks
+        if (/[A-Z]/.test(password)) strength += 1;
+        if (/[a-z]/.test(password)) strength += 1;
+        if (/\d/.test(password)) strength += 1;
+        if (/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)) strength += 1;
+
+        // Update UI based on strength
+        strengthFill.className = 'strength-fill';
+
+        if (strength <= 2) {
+            strengthFill.classList.add('strength-weak');
+            strengthText.textContent = 'Weak password';
+            strengthText.className = 'strength-text text-sm mt-1 text-red-600';
+        } else if (strength === 3) {
+            strengthFill.classList.add('strength-fair');
+            strengthText.textContent = 'Fair password';
+            strengthText.className = 'strength-text text-sm mt-1 text-yellow-600';
+        } else if (strength === 4) {
+            strengthFill.classList.add('strength-good');
+            strengthText.textContent = 'Good password';
+            strengthText.className = 'strength-text text-sm mt-1 text-blue-600';
+        } else {
+            strengthFill.classList.add('strength-strong');
+            strengthText.textContent = 'Strong password';
+            strengthText.className = 'strength-text text-sm mt-1 text-green-600';
+        }
+    }
+
+    // Account deletion
+    function showDeleteConfirmation() {
+        document.getElementById('deleteConfirm').style.display = 'block';
+    }
+
+    async function deleteAccount() {
+        const confirmation = document.getElementById('deleteConfirmation').value;
+
+        if (confirmation !== 'DELETE MY ACCOUNT') {
+            showAlert('Please type "DELETE MY ACCOUNT" to confirm', 'error');
+            return;
+        }
+
+        if (!confirm('This will permanently delete your account and all data. This action cannot be undone. Are you absolutely sure?')) {
+            return;
+        }
+
+        try {
+            const response = await fetch('/api/delete-account', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    confirmation: confirmation
+                })
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                showAlert('Account deleted successfully. Redirecting...');
+                setTimeout(() => {
+                    window.location.href = '/';
+                }, 2000);
+            } else {
+                showAlert(data.error, 'error');
+            }
+        } catch (error) {
+            showAlert('Error deleting account', 'error');
+        }
+    }
+
+    // Utility functions
+    function togglePassword(inputId) {
+        const input = document.getElementById(inputId);
+        const icon = input.nextElementSibling.querySelector('i');
+
+        if (input.type === 'password') {
+            input.type = 'text';
+            icon.className = 'fas fa-eye-slash';
+        } else {
+            input.type = 'password';
+            icon.className = 'fas fa-eye';
+        }
+    }
+
+    function logoutAllDevices() {
+        if (confirm('Are you sure you want to log out of all devices?')) {
+            // Redirect to logout endpoint
+            window.location.href = '/logout';
+        }
+    }
+</script>
+{% endblock %}

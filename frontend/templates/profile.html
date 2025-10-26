@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Profile - AI Smart Chat</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen font-sans">
+
+  <div class="bg-white rounded-2xl shadow-2xl w-full max-w-3xl overflow-hidden">
+    <!-- Header Banner -->
+    <div class="relative">
+      <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=800&q=60"
+           alt="Banner"
+           class="w-full h-40 object-cover">
+      <div class="absolute -bottom-12 left-6">
+        <img src="https://i.pravatar.cc/150?img=56"
+             class="w-28 h-28 rounded-full border-4 border-white shadow-xl">
+      </div>
+    </div>
+
+    <!-- User Info -->
+    <div class="pt-16 px-6 pb-8">
+      <div class="flex justify-between items-center">
+        <div>
+          <h2 class="text-2xl font-bold text-gray-800">Si Thu</h2>
+          <p class="text-gray-500">AI Smart Chat Learner</p>
+        </div>
+        <button class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg text-sm transition">
+          Edit Profile
+        </button>
+      </div>
+
+      <!-- Stats -->
+      <div class="flex justify-between mt-8 text-center">
+        <div>
+          <p class="text-2xl font-bold text-blue-600">89</p>
+          <p class="text-gray-500 text-sm">Total Chats</p>
+        </div>
+        <div>
+          <p class="text-2xl font-bold text-green-600">32</p>
+          <p class="text-gray-500 text-sm">Learning Topics</p>
+        </div>
+        <div>
+          <p class="text-2xl font-bold text-purple-600">7</p>
+          <p class="text-gray-500 text-sm">Badges Earned</p>
+        </div>
+      </div>
+
+      <!-- About Section -->
+      <div class="mt-8">
+        <h3 class="text-lg font-semibold text-gray-800 border-b pb-2 mb-3">About</h3>
+        <p class="text-gray-600 leading-relaxed text-sm">
+          Passionate learner exploring AI and smart education systems.
+          Enjoys learning through interactive chatbots that make complex topics simple.
+          Always striving to improve through daily AI chat lessons.
+        </p>
+      </div>
+
+      <!-- Skills / Interest Chips -->
+      <div class="mt-6 flex flex-wrap gap-2">
+        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-medium">Machine Learning</span>
+        <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-medium">Python</span>
+        <span class="bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-xs font-medium">AI Chat</span>
+        <span class="bg-pink-100 text-pink-700 px-3 py-1 rounded-full text-xs font-medium">Flask</span>
+      </div>
+
+      <!-- AI Tagline -->
+      <div class="mt-8 text-center">
+        <p class="text-gray-500 italic">“Learn smart. Chat smarter.”</p>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
